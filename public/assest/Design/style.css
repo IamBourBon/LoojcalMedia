@@ -1,0 +1,152 @@
+/* Center the list */
+  body {
+    --shadow-2: hsla(236, 50%, 50%, .4);
+    --global-background: hsl(220, 25%, 10%);
+    --primary: hsl(255, 30%, 55%);
+    background: var(--global-background);
+  }
+  
+  #listWrapper {
+    background: var(--primary);
+    border-radius: 9px;
+    box-shadow: 0 0 4.4rem 0.2rem var(--shadow-2);
+    padding: 30px;
+    width: 700px;
+  }
+  
+  /* List title */
+  #title {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  #titleInput {
+    font-family: "Open Sans", sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    color: #666f99;
+    padding: 9px 18px;
+  }
+  
+  #titleInput::placeholder {
+    color: rgba(63, 69, 95, .3);
+  }
+  
+  /* List title pencil */
+  .fa-pencil-alt {
+    font-size: 18px;
+    border-radius: 50%;
+    position: absolute;
+    right: 24px;
+    pointer-events: none;
+    color: #a8baf0;
+  }
+  
+  /* Separator */
+  #separator {
+    margin: 12px 0;
+    box-shadow: 0 12px 12px rgba(211, 220, 248, .3);
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    max-width: 100%;
+    height: 10px;
+  }
+  
+  /* To do items wrapper */
+  #itemsWrapper {
+    padding: 8px 8px;
+    margin: 12px 0;
+  }
+  
+  /* To do item */
+  .item {
+    width: 100%;
+    font-size: 18px;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 12px;
+    border: 0;
+    padding: 9px 12px;
+    color: #3f455f;
+    position: relative;
+  }
+  
+  .itemInner {
+    padding: 9px 10px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    /* border: solid 1px black; */
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: white;
+  }
+  
+  .itemInner p {
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .itemInner:hover{
+    transform: translate(-5px,-5px);
+    box-shadow: 10px 10px;
+  }
+  
+  /* Item buttons */
+  .fa-trash-alt {
+    pointer-events: none;
+    color: #a8baf0;
+    font-size: 18px;
+  }
+  
+  .removeItemBtn {
+    position: absolute;
+    right: 4px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    opacity: 0;
+  }
+  
+  .fa-hand-point-right {
+    color: #a8baf0;
+    margin-right: 9px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  /* Add a new item section */
+  #addNewItemWrapper {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  #addNewItemInput {
+    width: 100%;
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border: 0;
+    border-radius: 9px;
+    color: #666f99;
+    padding: 12px 60px 12px 18px;
+    background: #f3f5fc;
+    outline: none;
+  }
+  
+  #addNewItemBtn {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    padding: 0 18px;
+    background: transparent;
+    border: 0;
+    color: #666f99;
+    cursor: pointer;
+    font-size: 18px;
+  }
