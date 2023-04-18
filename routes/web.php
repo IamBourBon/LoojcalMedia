@@ -51,5 +51,8 @@ route::get('/design/chatBox',function(){
 route::get('/design/listUser',function(){
     return view('/design/templateListUser');
 });
+route::get('/design/createServer',function(){
+    return view('/design/templateCreateServer');
+});
 
 

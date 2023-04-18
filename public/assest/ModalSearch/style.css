@@ -619,7 +619,6 @@ when users will click/enter button(link) browser will add a #id in a url and whe
 }
 
 .sidebar i{
-  color: #fff;
   height: 60px;
   min-width: 50px;
   font-size: 28px;
@@ -1136,3 +1135,168 @@ details[open] summary {
   font-size: 1.13rem;
 } */
 
+
+/* button setting */
+
+.noselect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+		-webkit-tap-highlight-color: transparent;
+}
+
+.red{
+  width: 50px;
+	height: 50px;
+	cursor: pointer;
+	background: #30363d;
+	border-radius: 10px;
+	box-shadow: -1px -1px 1px #272c32, 1px 1px 1.5px #1f2327, inset 1px 1px 1px #272c32, inset -1px -1px 1.5px #1f2327;
+	color: #f07171;
+	font-size: 16px;
+}
+
+.red:focus {
+	outline: none;
+}
+
+.red:hover > i{
+	color: #f07171;
+	text-shadow: 0px 0px 10px #f07171;
+  box-shadow: -0.5px -0.5px 15px #272c32, 0.5px 0.5px 15px #1f2327, inset 0.5px 0.5px 1px #1f2327, inset -0.5px -0.5px 1px #272c32;
+	font-size: 22px;
+	transition: 500ms;
+}
+
+
+/* modal create server */
+
+.button {
+  background-color: #4CAF50;
+  /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 100px;
+  margin-top: 25px;
+}
+
+.popup {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  /* backdrop-filter: blur(10px); */
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+}
+
+.popup:target {
+  opacity: 1;
+  visibility: visible;
+}
+.popup__content {
+  width: 440px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.2);
+  color: black;
+  border-radius: 6px;
+  transition: .2s;
+}
+
+.popup__content2 {
+  width: 440px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.2);
+  color: black;
+  border-radius: 10px;
+  transition: .2s;
+}
+
+.popup__text {
+  font-size: 1.4rem;
+  margin-bottom: 4rem;
+}
+
+#btn-create{
+  width: 100%;
+  height: 70px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  outline: none;
+  border-radius: 5px;
+  background: none;
+  font-weight: bold;
+  padding: 10px;
+  margin-top: 13px;
+}
+
+#btn-create:hover{
+  background: rgba(0, 0, 0, 0.1);
+}
+
+#btn-create img{
+  width: 45px;
+  height: 45px;
+  margin-left: 10px;
+  border-radius: 50px;
+  float: left;
+}
+
+#btn-create p{
+  margin: 13px 20px 13px; 
+  font-size: 15px;
+  color: #21262d;
+  float: left;
+}
+
+#btn-pre{
+  width: 100%;
+  height: 60px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  outline: none;
+  border-radius: 5px;
+  background: none;
+  font-size: large;
+}
+
+#btn-pre:hover{
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.previous{
+  margin-left: 0px;
+  transition: .2s;
+}
+
+.next{
+  margin-left: -440px;
+  transition: .2s;
+} 
+
+.modal-server{
+  display: flex;
+  margin-top: 50px;
+  width: 500%;
+}
+
+.slider{
+  width: 440px;
+  height: 700px;
+  border-radius: 10px;
+  /* background: rebeccapurple; */
+  margin-left: 35%;
+  overflow: hidden;
+}

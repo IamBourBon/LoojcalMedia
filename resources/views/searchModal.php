@@ -67,6 +67,10 @@
                 </a>
                 <span class="tooltip">Analytics</span>
             </li>
+            <li>
+                <button class="btn-setting red"><i class="fa fa-plus red"></i></button>
+                <span class="tooltip">Create new server</span>
+            </li>
         </ul>
     </div>
     <!-- side bar -->
@@ -231,7 +235,7 @@
 
         <div class="modal-container" id="m1-o" style="--m-background: transparent;">
             <div class="modal">
-                
+
                 <div class="top-search" id="suggestSearch">
                     <form id="FormSearch" method="post" action="/search/resultPage">
                         <input id="searchBar" autocomplete="off" type="text" placeholder="Every or Nothing ?" name="search">
@@ -243,7 +247,7 @@
 
                     <div id="itemsWrapper">
                         <div class="searchItem">
-                            
+
                         </div>
                     </div>
 
@@ -255,6 +259,28 @@
 
     </div>
     <!-- /modal 1 -->
+
+    <!-- modal create server -->
+
+    <div class="popup" id="popup">
+        <div class="slider">
+            <div class="modal-server">
+                <div class="popup__content">
+                    <h2 class="heading-secondary">Start booking now</h2>
+                    <button id="btn-create"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Create a new server</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;"></i></button>
+                    <a href="#" class="button">Close Popup</a>
+                </div>
+
+                <div class="popup__content2">
+                    <h2 class="heading-secondary">Start booking now</h2>
+                    <button id="btn-pre">Cancel</button>
+                    <a href="#" class="button">Close Popup</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal create server -->
 
     <script>
         $(document).ready(function() {
@@ -292,7 +318,7 @@
 
                             if ($.inArray(value.Account_id, arrSuggest) === -1 && key < 5) {
                                 //html = '<a href="/' + value.Email + '"><div id=sg' + value.Account_id + ' name=' + value.Account_id + ' style="position: relative;background-color: #f4f2f2; padding: 10px; border-radius: 10px; color:black"><img src="https://boxgaixinh.net/wp-content/uploads/2023/02/avatar-cute-meo-2.1.jpg" style="width: 65px !important; padding-right:15px; border-radius: 30px"><p id="suggestName' + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p></div></a>';
-                                html = '<a href="/' + value.Email + '"><div id=sg' + value.Account_id + ' name=' + value.Account_id + ' class="suggest"><img src="https://boxgaixinh.net/wp-content/uploads/2023/02/avatar-cute-meo-2.1.jpg"><p id="suggestName' + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p></div></a>';  
+                                html = '<a href="/' + value.Email + '"><div id=sg' + value.Account_id + ' name=' + value.Account_id + ' class="suggest"><img src="https://boxgaixinh.net/wp-content/uploads/2023/02/avatar-cute-meo-2.1.jpg"><p id="suggestName' + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p></div></a>';
                                 arrSuggest.push(value.Account_id);
                                 $('.searchItem').append(html);
                             }
@@ -356,8 +382,8 @@
                             },
                             success: function(res) {
                                 arrHistory.push(res);
-                                if($('#sg'+res).find('div').length === 0){
-                                    $('#sg'+res).append('<div id="removeHis' + res + '"  name=' + res + ' style="display: inline-block; float: right; width: 27px; text-align: center; font-size: large; margin-top: 16px;">x</div>');
+                                if ($('#sg' + res).find('div').length === 0) {
+                                    $('#sg' + res).append('<div id="removeHis' + res + '"  name=' + res + ' style="display: inline-block; float: right; width: 27px; text-align: center; font-size: large; margin-top: 16px;">x</div>');
                                 }
                             }
                         });
@@ -394,7 +420,7 @@
                 //         console.log(error);
                 //     })
                 // }
-                
+
                 //Show HISTORY when search bar empty
                 if (search === '' && $.isEmptyObject(arrHistory)) {
                     $.ajax({
@@ -499,7 +525,7 @@
 
                     event.preventDefault();
                 })
-                
+
             });
 
 
@@ -574,6 +600,24 @@
             //DRAG search modal
             $('.modal').draggable();
 
+
+            //CREATE SERVER
+            $('.btn-setting').click(function(){
+                $(this).find('.red').click(function(event){
+                    document.location.hash = "#popup";
+                    event.stopPropagation();
+                })
+            })
+
+            $('#btn-create').click(function() {
+                $('.popup__content').addClass('next');
+                $('.popup__content').removeClass('previous');
+            })
+
+            $('#btn-pre').click(function() {
+                $('.popup__content').addClass('previous');
+                $('.popup__content').removeClass('next');
+            })
         })
     </script>
 
