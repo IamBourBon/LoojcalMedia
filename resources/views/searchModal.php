@@ -266,15 +266,25 @@
         <div class="slider">
             <div class="modal-server">
                 <div class="popup__content">
-                    <h2 class="heading-secondary">Start booking now</h2>
+                    <div class="popup__title">Tạo máy chủ</div>
+                    <a href="#" class="button">x</a>
                     <button id="btn-create"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Create a new server</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;"></i></button>
-                    <a href="#" class="button">Close Popup</a>
+                    <button id="btn-join">Join our server</button>
                 </div>
 
                 <div class="popup__content2">
-                    <h2 class="heading-secondary">Start booking now</h2>
-                    <button id="btn-pre">Cancel</button>
-                    <a href="#" class="button">Close Popup</a>
+                    <h2 class="popup__title">Start booking now</h2>
+                    <a href="#" class="button">x</a>
+                    <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
+                </div>
+
+                <div class="popup__content__join">
+                    <div class="popup__title">Tham gia máy chủ</div>
+                    <a href="#" class="button">x</a>
+                    <p style="display:inline-block;">Liên kết máy chủ <p style="display:inline-block;color:red;margin-left:5px;">*</p></p>
+                    <input type="text" class="input-join">
+                    <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
+                    <button class="btn-join-server">Tham gia máy chủ</button>
                 </div>
             </div>
         </div>
@@ -614,9 +624,16 @@
                 $('.popup__content').removeClass('previous');
             })
 
-            $('#btn-pre').click(function() {
+            $('.btn-pre').click(function() {
                 $('.popup__content').addClass('previous');
+
+                $('.popup__content').removeClass('join');
                 $('.popup__content').removeClass('next');
+            })
+
+            $('#btn-join').click(function(){
+                $('.popup__content').addClass('join');
+                $('.popup__content').removeClass('previous');
             })
         })
     </script>
