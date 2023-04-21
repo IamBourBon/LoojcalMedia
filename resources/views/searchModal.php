@@ -268,21 +268,38 @@
                 <div class="popup__content">
                     <div class="popup__title">Tạo máy chủ</div>
                     <a href="#" class="button">x</a>
-                    <button id="btn-create"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Create a new server</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;"></i></button>
+                    <button id="btn-create"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Tạo máy chủ mới</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i></button>
                     <button id="btn-join">Join our server</button>
                 </div>
 
-                <div class="popup__content2">
-                    <h2 class="popup__title">Start booking now</h2>
+                <div class="popup__content__create">
+                    <h2 class="popup__title">Thông tin về máy chủ</h2>
                     <a href="#" class="button">x</a>
+                    <button class="btn-create-server"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Máy chủ cộng đồng</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i></button>
+                    <button class="btn-create-server"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Máy chủ riêng tư</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i></button>
                     <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
+                </div>
+
+                <div class="popup__content__create__setting">
+                    <h2 class="popup__title">Tùy chỉnh về máy chủ của bạn</h2>
+                    <a href="#" class="button">x</a>
+                    <div class="popup__upload">
+                        <i class="fa fa-camera icon-upload"><p style="font-size: 16px;">upload</p></i>
+                        <input type="file">
+                    </div>
+                    <p style="display: inline-block" class="popup__title__data">Tên máy chủ <p style="display:inline-block;color:red;margin-left:5px;">*</p></p>
+                    <input type="text" class="input-join">
+                    <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
+                    <button class="btn-join-server">Tạo</button>
                 </div>
 
                 <div class="popup__content__join">
                     <div class="popup__title">Tham gia máy chủ</div>
                     <a href="#" class="button">x</a>
-                    <p style="display:inline-block;">Liên kết máy chủ <p style="display:inline-block;color:red;margin-left:5px;">*</p></p>
+                    <p style="display: inline-block" class="popup__title__data">Liên kết máy chủ <p style="display:inline-block;color:red;margin-left:5px;">*</p></p>
                     <input type="text" class="input-join">
+                    <p class="popup__title__data">Lời mời trông giống như</p>
+                    <p style="margin-top:10px; font-size: 14px;">hZ431241<br>https://localhost/hZ431241<br>https://localhost/cool-server<br></p>
                     <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
                     <button class="btn-join-server">Tham gia máy chủ</button>
                 </div>
@@ -298,6 +315,11 @@
             document.location.hash = "";
             arrSuggest = [];
             arrHistory = [];
+
+            heightJoin = $('.popup__content__join').outerHeight();
+            heightSetting = $('.popup__content__create__setting').outerHeight();
+            heightMain = $('.popup__content').outerHeight();
+            heightCreate = $('.popup__content__create').outerHeight();
 
             var process;
 
@@ -621,19 +643,29 @@
 
             $('#btn-create').click(function() {
                 $('.popup__content').addClass('next');
-                $('.popup__content').removeClass('previous');
+
             })
 
             $('.btn-pre').click(function() {
-                $('.popup__content').addClass('previous');
 
-                $('.popup__content').removeClass('join');
-                $('.popup__content').removeClass('next');
+                classList = $('.popup__content').attr('class').split(' ');
+                classList.pop();
+                $('.popup__content').attr('class',classList.toString().replace(',',' '));
+                $('.popup__content').css('height', heightMain+'px');
             })
 
             $('#btn-join').click(function(){
                 $('.popup__content').addClass('join');
-                $('.popup__content').removeClass('previous');
+
+                //MAKE ANIMATION SCALE
+                $('.popup__content').css('height', heightJoin+'px');
+            })
+
+            $('.btn-create-server').click(function(){
+                $('.popup__content').addClass('setting-server');
+                
+                //MAKE ANIMATION SCALE
+                $('.popup__content').css('height', heightSetting+'px');
             })
         })
     </script>
