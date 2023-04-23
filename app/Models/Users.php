@@ -14,7 +14,7 @@ class Users extends Model
     
     protected $fillable = ['Firstname','Lastname','Gender','Password','Email','Create_time',
                            'Number_of_followers','Followers','Number_of_friends','Friends',
-                           'Phone','Post_id','Group_id','Avatar','Cover_image','BlackList','SearchList','Active','Status','Token'];
+                           'Phone','Post_id','Group_id','Avatar','Cover_image','BlackList','SearchList','CreateServer','JoinServer','Active','Status','Token'];
     
     protected $table = "account"; 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Users;
 use App\Models\SocialAccount;
+use App\Models\Servers;
 use Laravel\Socialite\Contracts\Provider;
 
 use Mail,Session,Str,DateTime,Socialite;
@@ -274,4 +275,122 @@ class UserController extends Controller
 
         return $json;
     }
+
+
+    //CREATE SERVER
+
+    public function createServer(Request $request){
+
+        $data = [
+            'Server_name' => $request->input('name'),
+            'Private' => $request->input('private'),
+            'Image' => $request->input('image'),
+            'Status' => 1,
+        ];
+ 
+        $createSuccess = Servers::insert($data);
+
+        if($createSuccess){
+            return "success";
+        }
+    }
+
+    //GET SERVER
+    
+    public function getServer(){
+        $jsonServerJoined = Users::where('Email',Session::get('email'))->first('JoinServer');
+        $jsonServerCreated = Users::where('Email',Session::get('email'))->first('CreateServer');
+
+        $server = []; 
+        
+        //Check it JSON ??? 
+
+        $ServerJoined = json_decode($jsonServerJoined['JoinServer']);
+        // $ServerCreated = json_decode($jsonServerCreated['CreateServer']);
+        
+        foreach($ServerJoined as $value){
+            $found = Servers::Where('URL',$value)->first(['Server_name','Image','Category']);
+            
+            if($found){
+                array_push($server,$found);
+            }    
+        }
+
+        // foreach($ServerCreated as $value){
+        //     $found = Servers::Where('URL',$value)->get('Server_name','Image','Category');
+            
+        //     if($found){
+        //         array_push($server,$found);
+        //     }    
+        // }
+
+        return $server;
+    }
+
+    //JOIN SERVER
+
+    public function joinServer(Request $request){
+
+        $url = $request->input('url');
+        if($url !== ''){
+
+            if(str_contains($url,"http://localhost/")){
+                $code = str_replace("http://localhost/","",$url);
+                $Server = Servers::where('URL',$code)->first();
+                
+                if($Server){
+
+                    //get list server join
+                    $list = json_decode($this->getServerJoined());
+
+                    //push new
+                    if(!in_array($Server->URL, $list)){
+                        array_push($list, $Server->URL); 
+                    }
+
+                    //update
+                    Users::where('Email',Session::get('email'))->update(['JoinServer'=> json_encode($list)]);
+                    
+                    return $this->getServerJoined();
+                }
+
+            }else{
+
+                $Server = Servers::where('URL',$url)->first();
+
+                //get list server join
+                $list = json_decode($this->getServerJoined());
+
+                //push new
+                if(!in_array($Server->URL, $list)){
+                    array_push($list, $Server->URL); 
+                }
+
+                // //update
+                Users::where('Email',Session::get('email'))->update(['JoinServer'=> json_encode($list)]);
+                
+                return $this->getServerJoined();
+            }
+        }
+        
+    }
+
+    public function getServerJoined(){
+        $list = Users::where('Email',Session::get('email'))->first('JoinServer');
+        if($list['JoinServer'] === ''){
+            return json_encode([]);
+        }else{
+            return $list['JoinServer'];
+        }
+    }
+
+    public function getServerCreated(){
+        $list = Users::where('Email',Session::get('email'))->first('CreateServer');
+        if($list['CreateServer'] === ''){
+            return json_encode([]);
+        }else{
+            return $list['CreateServer'];
+        }
+    }
+
 }

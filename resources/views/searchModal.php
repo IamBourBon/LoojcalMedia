@@ -26,7 +26,7 @@
             <div class="top-search" id="suggestSearch">
                 <form id="FormSearch" method="post" action="/search/resultPage">
                     <input id="searchBar" autocomplete="off" type="text" placeholder="Search Friend" name="search">
-                    <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
+                    <input type="hidden" name="_token" value="">
                     <button><i class="fa fa-search" aria-hidden="true"></i></button>
                 </form>
             </div>
@@ -260,54 +260,76 @@
     </div>
     <!-- /modal 1 -->
 
-    <!-- modal create server -->
 
+    <!-- modal create server -->
     <div class="popup" id="popup">
         <div class="slider">
             <div class="modal-server">
+
                 <div class="popup__content">
                     <div class="popup__title">Tạo máy chủ</div>
                     <a href="#" class="button">x</a>
-                    <button id="btn-create"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Tạo máy chủ mới</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i></button>
-                    <button id="btn-join">Join our server</button>
+                    <button id="btn-create"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt="">
+                        <p>Tạo máy chủ mới</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
+                    </button>
+                    <button id="btn-join">Tham gia máy chủ</button>
                 </div>
 
                 <div class="popup__content__create">
                     <h2 class="popup__title">Thông tin về máy chủ</h2>
                     <a href="#" class="button">x</a>
-                    <button class="btn-create-server"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Máy chủ cộng đồng</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i></button>
-                    <button class="btn-create-server"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt=""><p>Máy chủ riêng tư</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i></button>
+                    <button class="btn-create-server" value="0"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt="">
+                        <p>Máy chủ cộng đồng</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
+                    </button>
+                    <button class="btn-create-server" value="1"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt="">
+                        <p>Máy chủ riêng tư</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
+                    </button>
                     <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
                 </div>
 
                 <div class="popup__content__create__setting">
+
                     <h2 class="popup__title">Tùy chỉnh về máy chủ của bạn</h2>
                     <a href="#" class="button">x</a>
+                    <p style="text-align: center; margin: 10px 0px;">Hãy cá nhân hóa máy chủ bằng cách đặt tên và thêm biểu tượng đại diện. Bạn có thể đổi bất cứ lúc nào</p>
+
                     <div class="popup__upload">
-                        <i class="fa fa-camera icon-upload"><p style="font-size: 16px;">upload</p></i>
-                        <input type="file">
+                        <i class="fa fa-camera icon-upload">
+                            <p>UPLOAD</p>
+                        </i>
+                        <i class="fa fa-plus icon-plus"></i>
+                        <img id="previewImg" src="#" />
+                        <input type="file" accept="image/*" id="imgInp">
                     </div>
-                    <p style="display: inline-block" class="popup__title__data">Tên máy chủ <p style="display:inline-block;color:red;margin-left:5px;">*</p></p>
-                    <input type="text" class="input-join">
+
+                    <p style="display: inline-block" class="popup__title__data">Tên máy chủ
+                    <p style="display:inline-block;color:red;margin-left:5px;">*</p>
+                    </p>
+                    <input type="text" class="input-join" id="serverID">
                     <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
-                    <button class="btn-join-server">Tạo</button>
+                    <button id="create-server" class="btn-join-server" type="submit">Tạo</button>
+
                 </div>
+
 
                 <div class="popup__content__join">
                     <div class="popup__title">Tham gia máy chủ</div>
                     <a href="#" class="button">x</a>
-                    <p style="display: inline-block" class="popup__title__data">Liên kết máy chủ <p style="display:inline-block;color:red;margin-left:5px;">*</p></p>
-                    <input type="text" class="input-join">
+                    <p style="display: inline-block" class="popup__title__data">Liên kết máy chủ
+                    <p style="display:inline-block;color:red;margin-left:5px;">*</p>
+                    </p>
+                    <input type="text" class="input-join" id="join-name">
                     <p class="popup__title__data">Lời mời trông giống như</p>
-                    <p style="margin-top:10px; font-size: 14px;">hZ431241<br>https://localhost/hZ431241<br>https://localhost/cool-server<br></p>
+                    <p style="margin-top:10px; font-size: 14px;">hZ431241<br>http://localhost/hZ431241<br>http://localhost/cool-server<br></p>
                     <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
-                    <button class="btn-join-server">Tham gia máy chủ</button>
+                    <button id="join-server" class="btn-join-server">Tham gia máy chủ</button>
                 </div>
+
             </div>
         </div>
     </div>
-
     <!-- modal create server -->
+
 
     <script>
         $(document).ready(function() {
@@ -315,6 +337,7 @@
             document.location.hash = "";
             arrSuggest = [];
             arrHistory = [];
+            private_server = 0;
 
             heightJoin = $('.popup__content__join').outerHeight();
             heightSetting = $('.popup__content__create__setting').outerHeight();
@@ -633,40 +656,114 @@
             $('.modal').draggable();
 
 
-            //CREATE SERVER
-            $('.btn-setting').click(function(){
-                $(this).find('.red').click(function(event){
+            //CREATE SERVER animation
+            $('.btn-setting').click(function() {
+                $(this).find('.red').click(function(event) {
                     document.location.hash = "#popup";
                     event.stopPropagation();
                 })
-            })
+            });
 
             $('#btn-create').click(function() {
                 $('.popup__content').addClass('next');
 
-            })
+            });
 
             $('.btn-pre').click(function() {
 
                 classList = $('.popup__content').attr('class').split(' ');
                 classList.pop();
-                $('.popup__content').attr('class',classList.toString().replace(',',' '));
-                $('.popup__content').css('height', heightMain+'px');
-            })
+                $('.popup__content').attr('class', classList.toString().replace(',', ' '));
+                $('.popup__content').css('height', heightMain + 'px');
+            });
 
-            $('#btn-join').click(function(){
+            $('#btn-join').click(function() {
                 $('.popup__content').addClass('join');
 
                 //MAKE ANIMATION SCALE
-                $('.popup__content').css('height', heightJoin+'px');
+                $('.popup__content').css('height', heightJoin + 'px');
+            });
+
+            $('.btn-create-server').click(function() {
+                $('.popup__content').addClass('setting-server');
+
+                //MAKE ANIMATION SCALE
+                $('.popup__content').css('height', heightSetting + 'px');
+
+                //SETTING PRIVACY for server
+                private_server = $(this).attr("value");
+            });
+
+            $('.button').click(function() {
+                $('.popup__content').attr('class', 'popup__content');
+            });
+
+            //PREVIEW image before upload !!! pls decode SRC for SECURITY REASON !!!
+            $('#imgInp').change(function() {
+                const [file] = imgInp.files;
+                if (file) {
+                    $('#previewImg').css('opacity', '1');
+                    previewImg.src = URL.createObjectURL(file);
+                    $('.popup__upload i').css('opacity', '0');
+                } else {
+                    previewImg.src = "#";
+                    $('#previewImg').css('opacity', '0');
+                    $('.popup__upload i').css('opacity', '1');
+                }
             })
 
-            $('.btn-create-server').click(function(){
-                $('.popup__content').addClass('setting-server');
-                
-                //MAKE ANIMATION SCALE
-                $('.popup__content').css('height', heightSetting+'px');
-            })
+            //REQUEST CREATE SERVER
+            $('#create-server').click(function(){
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: "/createServer",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        private: private_server,
+                        name: $('#serverID').val(),
+                        image: $('#imgInp')[0].files[0].name
+                    }
+
+                }).done(function(response) {
+                    console.log(response);
+                });
+            });
+
+            //REQUEST JOIN SERVER
+            $('#join-server').click(function(){
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: "/joinServer",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        url: $('#join-name').val() 
+                    }
+
+                }).done(function(response) {
+                    console.log(response);
+                });
+            });
+
+            //LOAD SERVER
+            $.ajax({
+                async: true,
+                type: 'POST',
+                url: "/loadServer",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(function(response) {
+                console.log(response);
+            });
+            
         })
     </script>
 

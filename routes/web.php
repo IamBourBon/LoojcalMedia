@@ -38,6 +38,18 @@ Route::get('/search/history/get', [UserController::class, 'getHistorySearch']);
 Route::post('/search/history/remove', [UserController::class, 'removeHistorySearch']);
 
 
+//CREATE SERVER
+Route::post('/createServer', [UserController::class, 'createServer']);
+
+
+//JOIN SERVER
+Route::post('/joinServer', [UserController::class, 'joinServer']);
+
+
+//LOAD SERVER
+Route::post('/loadServer', [UserController::class, 'getServer']);
+
+
 //DESIGN ROUTE
 route::get('/design/listItem',function(){
     return view('/design/templateListItem');
