@@ -281,17 +281,25 @@ class UserController extends Controller
 
     public function createServer(Request $request){
 
+        $url = Str::random(10);
+        $list = json_decode($this->getServerCreated());
+        
         $data = [
             'Server_name' => $request->input('name'),
             'Private' => $request->input('private'),
             'Image' => $request->input('image'),
+            'URL' => $url,
             'Status' => 1,
         ];
- 
+
+        array_push($list,$url);
+
+        Users::where('Email',Session::get('email'))->update(['CreateServer' => json_encode($list)]);
+        
         $createSuccess = Servers::insert($data);
 
         if($createSuccess){
-            return "success";
+            return $url;
         }
     }
 
@@ -303,28 +311,32 @@ class UserController extends Controller
 
         $server = []; 
         
-        //Check it JSON ??? 
-
-        $ServerJoined = json_decode($jsonServerJoined['JoinServer']);
-        // $ServerCreated = json_decode($jsonServerCreated['CreateServer']);
+        //Check it NULL 
+        if($jsonServerJoined['JoinServer'] !== null){
+            $ServerJoined = json_decode($jsonServerJoined['JoinServer']);
         
-        foreach($ServerJoined as $value){
-            $found = Servers::Where('URL',$value)->first(['Server_name','Image','Category']);
-            
-            if($found){
-                array_push($server,$found);
-            }    
+            foreach($ServerJoined as $value){
+                $found = Servers::Where('URL',$value)->first(['Server_name','Image','Category','URL']);
+                
+                if($found){
+                    array_push($server,$found);
+                }    
+            }
         }
 
-        // foreach($ServerCreated as $value){
-        //     $found = Servers::Where('URL',$value)->get('Server_name','Image','Category');
-            
-        //     if($found){
-        //         array_push($server,$found);
-        //     }    
-        // }
+        if($jsonServerCreated['CreateServer'] !== null){
+            $ServerCreated = json_decode($jsonServerCreated['CreateServer']);
+        
+            foreach($ServerCreated as $value){
+                $found = Servers::Where('URL',$value)->first(['Server_name','Image','Category','URL']);
+                
+                if($found){
+                    array_push($server,$found);
+                }    
+            }
+        }
 
-        return $server;
+        return json_encode($server) ;
     }
 
     //JOIN SERVER
@@ -332,6 +344,7 @@ class UserController extends Controller
     public function joinServer(Request $request){
 
         $url = $request->input('url');
+        
         if($url !== ''){
 
             if(str_contains($url,"http://localhost/")){
@@ -351,6 +364,7 @@ class UserController extends Controller
                     //update
                     Users::where('Email',Session::get('email'))->update(['JoinServer'=> json_encode($list)]);
                     
+                    //TYPE JSON
                     return $this->getServerJoined();
                 }
 
@@ -366,9 +380,10 @@ class UserController extends Controller
                     array_push($list, $Server->URL); 
                 }
 
-                // //update
+                //update
                 Users::where('Email',Session::get('email'))->update(['JoinServer'=> json_encode($list)]);
                 
+                //TYPE JSON
                 return $this->getServerJoined();
             }
         }
@@ -377,18 +392,20 @@ class UserController extends Controller
 
     public function getServerJoined(){
         $list = Users::where('Email',Session::get('email'))->first('JoinServer');
-        if($list['JoinServer'] === ''){
+        if($list['JoinServer'] === null){
             return json_encode([]);
         }else{
+            //TYPE JSON
             return $list['JoinServer'];
         }
     }
 
     public function getServerCreated(){
         $list = Users::where('Email',Session::get('email'))->first('CreateServer');
-        if($list['CreateServer'] === ''){
+        if($list['CreateServer'] === null){
             return json_encode([]);
         }else{
+            //TYPE JSON
             return $list['CreateServer'];
         }
     }

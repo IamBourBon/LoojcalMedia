@@ -66,5 +66,8 @@ route::get('/design/listUser',function(){
 route::get('/design/createServer',function(){
     return view('/design/templateCreateServer');
 });
+route::get('/design/videoCall',function(){
+    return view('/design/templateVideoCall');
+});
 
 

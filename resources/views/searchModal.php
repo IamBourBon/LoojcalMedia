@@ -19,22 +19,6 @@
 </head>
 
 <body>
-    <!-- topbar -->
-    <!-- <div class="topbar stick">
-
-        <div class="top-area">
-            <div class="top-search" id="suggestSearch">
-                <form id="FormSearch" method="post" action="/search/resultPage">
-                    <input id="searchBar" autocomplete="off" type="text" placeholder="Search Friend" name="search">
-                    <input type="hidden" name="_token" value="">
-                    <button><i class="fa fa-search" aria-hidden="true"></i></button>
-                </form>
-            </div>
-        </div>
-
-    </div> -->
-    <!-- topbar -->
-
 
     <!-- side bar -->
     <div class="sidebar">
@@ -42,31 +26,7 @@
             <i class='fa fa-bars' id="btn"></i>
         </div>
         <ul class="nav-list">
-            <li>
-                <a href="#">
-                    <!-- <i class='fa fa-home'></i> -->
-                    <img src="https://i.pinimg.com/736x/9f/9c/62/9f9c628f9306015268f2290b2f193714.jpg">
-                </a>
-                <span class="tooltip">Dashboard</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='fa fa-home'></i>
-                </a>
-                <span class="tooltip">User</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='fa fa-home'></i>
-                </a>
-                <span class="tooltip">Messages</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='fa fa-home'></i>
-                </a>
-                <span class="tooltip">Analytics</span>
-            </li>
+
             <li>
                 <button class="btn-setting red"><i class="fa fa-plus red"></i></button>
                 <span class="tooltip">Create new server</span>
@@ -334,10 +294,19 @@
     <script>
         $(document).ready(function() {
 
+            //modal search
             document.location.hash = "";
+            //search
             arrSuggest = [];
             arrHistory = [];
+            //server
+            server = [];
             private_server = 0;
+            //sidebar
+            currentLocation = 0;
+            originLocationTop = 0;
+            originLocationBottom = $('.sidebar .nav-list').outerHeight();
+            
 
             heightJoin = $('.popup__content__join').outerHeight();
             heightSetting = $('.popup__content__create__setting').outerHeight();
@@ -444,7 +413,7 @@
                         });
                     }
                 });
-            })
+            });
 
 
             //HISTORY search
@@ -595,7 +564,7 @@
                 if (event.keyCode === 13) {
                     event.preventDefault();
                 };
-            })
+            });
 
 
             //AJAX request with return PROMISE 
@@ -625,13 +594,6 @@
                 })
 
             }
-
-
-            //SIDE BAR effect
-            $('.nav-list li a').click(function() {
-                $(this).parent().parent().find('li a').removeClass("focusIn");
-                $(this).addClass("focusIn");
-            });
 
 
             //LIST user
@@ -713,7 +675,7 @@
             })
 
             //REQUEST CREATE SERVER
-            $('#create-server').click(function(){
+            $('#create-server').click(function() {
 
                 $.ajax({
                     async: true,
@@ -729,12 +691,13 @@
                     }
 
                 }).done(function(response) {
-                    console.log(response);
+                    // console.log(response);
+                    reloadServer();
                 });
             });
 
             //REQUEST JOIN SERVER
-            $('#join-server').click(function(){
+            $('#join-server').click(function() {
 
                 $.ajax({
                     async: true,
@@ -744,26 +707,75 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     data: {
-                        url: $('#join-name').val() 
+                        url: $('#join-name').val()
                     }
 
                 }).done(function(response) {
-                    console.log(response);
+
+                    reloadServer();
                 });
             });
 
             //LOAD SERVER
-            $.ajax({
-                async: true,
-                type: 'POST',
-                url: "/loadServer",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-            }).done(function(response) {
-                console.log(response);
+            function reloadServer() {
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: "/loadServer",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                }).done(function(response) {
+
+                    $.each(JSON.parse(response), function(key, value) {
+
+                        if (!server.includes(value.URL)) {
+
+                            html = `<li>
+                                <a href="#" id="${value.URL}">
+                                    <img src="https://i.pinimg.com/736x/9f/9c/62/9f9c628f9306015268f2290b2f193714.jpg">
+                                </a>
+                                <span class="tooltip">${value.Server_name}</span>
+                            </li>`;
+
+                            $('.nav-list').prepend(html);
+                            server.push(value.URL);
+                            console.log(server);
+                        }
+                    });
+
+
+                    //SIDE BAR effect
+                    $('.nav-list li a').click(function() {
+                        $(this).parent().parent().find('li a').removeClass("focusIn");
+                        $(this).addClass("focusIn");
+                    });
+
+                    //AUTO CLICK FIRST SERVER
+                    $('.nav-list li a')[0].click();
+                });
+            }
+
+            reloadServer();
+
+
+
+            // EFFECT scroll sidebar
+            $('.sidebar ul').bind('mousewheel', function(e) {
+
+                if (e.originalEvent.wheelDelta / 120 > 0) {
+                    if(currentLocation < originLocationTop){
+                        currentLocation += e.originalEvent.wheelDelta;
+                        $(this).css('margin-top', currentLocation + 'px');
+                    }
+                } else {
+                    if(currentLocation > -(originLocationBottom / 7)){
+                        currentLocation += e.originalEvent.wheelDelta;
+                        $(this).css('margin-top', currentLocation + 'px');
+                    }
+                }
             });
-            
+
         })
     </script>
 
