@@ -17,7 +17,7 @@
 <body class="dark">
 
     <div class="app-container">
-        <button class="mode-switch">
+        <button class="mode-switch" id="join-btn">
             <svg class="sun" fill="none" stroke="#fbb046" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-sun" viewBox="0 0 24 24">
                 <defs />
                 <circle cx="12" cy="12" r="5" />
@@ -78,7 +78,7 @@
         </div> -->
 
         <div class="app-main">
-            <div class="video-call-wrapper">
+            <div class="video-call-wrapper" id="streams__container">
                 <div class="video-participant">
                     <div class="participant-actions">
                         <button class="btn-mute"></button>
@@ -295,9 +295,9 @@
 
     <script>
         $(document).ready(function() {
-            $('button.mode-switch').click(function() {
-                $('body').toggleClass('dark');
-            });
+            // $('button.mode-switch').click(function() {
+            //     $('body').toggleClass('dark');
+            // });
 
             $(".btn-close-right").click(function() {
                 $(".right-side").removeClass("show");
@@ -310,6 +310,12 @@
             });
         });
     </script>
+
+    <script type="text/javascript" src="/assest/ModalSearch/AgoraRTC_N-4.11.0.js"></script>
+    <script type="text/javascript" src="/assest/ModalSearch/agora-rtm-sdk-1.4.4.js"></script>
+    <script type="text/javascript" src="/assest/ModalSearch/room.js"></script>
+    <script type="text/javascript" src="/assest/ModalSearch/room_rtm.js"></script>
+    <script type="text/javascript" src="/assest/ModalSearch/room_rtc.js"></script>
 </body>
 
 </html>

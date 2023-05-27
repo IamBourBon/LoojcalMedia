@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RTCController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -21,6 +22,7 @@ use App\Http\Controllers\UserController;
 Route::get('/', [UserController::class, 'index'])->middleware('ValidateSignin');
 //validate
 Route::get('/login', [UserController::class, 'loginPage']);
+Route::get('/logout', [UserController::class, 'logoutPage']);
 Route::get('/oauth2/{social}', [UserController::class, 'redirectToProvider']);
 Route::get('/oauth2/{social}/callback', [UserController::class, 'handleProviderCallback']);
 Route::post('/validate', [UserController::class, 'loginValidate']);
@@ -29,7 +31,9 @@ Route::get('/activeAccount/{email}', [UserController::class, 'activeAccount']);
 Route::get('/active/{email}/{token}', [UserController::class, 'active']);
 Route::post('/ajaxCheckData', [UserController::class, 'checkDataRegister']);
 
-//user function
+//USER INFO
+Route::post('/updateProfile', [UserController::class, 'updateProfile']);
+Route::get('/getProfile/{email}', [UserController::class, 'getUserInfoByEmail']);
 
 //SEARCH
 Route::post('/search', [UserController::class, 'Search']);
@@ -46,8 +50,12 @@ Route::post('/createServer', [UserController::class, 'createServer']);
 Route::post('/joinServer', [UserController::class, 'joinServer']);
 
 
-//LOAD SERVER
+//LOAD SERVER SIDEBAR
 Route::post('/loadServer', [UserController::class, 'getServer']);
+
+
+//LOAD VIDEO CALL SERVER
+Route::get('/room/{id}', [UserController::class, 'getVideoCall']);
 
 
 //DESIGN ROUTE
@@ -68,6 +76,15 @@ route::get('/design/createServer',function(){
 });
 route::get('/design/videoCall',function(){
     return view('/design/templateVideoCall');
+});
+route::get('/test/videoCall',function(){
+    return view('/design/VideoCallLocal');
+});
+route::get('/test/videoCall2',function(){
+    return view('/design/lobby');
+});
+route::get('/test/videoCall3',function(){
+    return view('/room');
 });
 
 

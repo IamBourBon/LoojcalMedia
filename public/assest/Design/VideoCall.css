@@ -170,10 +170,6 @@ a {
     width: 5px;
 }
    
-  /* .sidebar::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  } */
-   
 .chat-area::-webkit-scrollbar-thumb {
     background-color: var(--message-text);
     outline: 0px solid slategrey;
@@ -357,10 +353,6 @@ a {
 .video-call-wrapper::-webkit-scrollbar {
     width: 0px;
 }
-   
-  /* .sidebar::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  } */
    
 .video-call-wrapper::-webkit-scrollbar-thumb {
     background-color: var(--message-text);

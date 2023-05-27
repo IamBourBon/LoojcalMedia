@@ -12,7 +12,7 @@ use Mail,Session,Str,DateTime,Socialite;
 
 class UserController extends Controller
 {
-    private $a;
+    // private $a;
 
     public function index(){
         return view('searchModal');
@@ -23,6 +23,10 @@ class UserController extends Controller
         return view('landing');
     }
 
+    public function logoutPage(){
+        Session::flush();
+        return redirect('/');
+    }
     
     public function loginValidate(Request $request){
         
@@ -150,13 +154,13 @@ class UserController extends Controller
         Users::where('email',$email)->update(['Token' => null]);
     }
 
-
+    //login with OAuth2
     public function redirectToProvider($provider){
         return Socialite::driver($provider)->redirect();
     }
-
-    public function handleProviderCallback($provider)
-    {
+    
+    //login with OAuth2
+    public function handleProviderCallback($provider){
 
         $Oauth = Socialite::driver($provider);
         $providerUser = $Oauth->stateless()->user();
@@ -166,7 +170,11 @@ class UserController extends Controller
 
         if($account){
             Session::put(['email' => $providerUser->getEmail()]);
+
+            $accountInfo = $this->getUserInfoByEmail($providerUser->getEmail());
+            Session::put(['avatar' => $accountInfo['Avatar']]);
             return redirect('/');
+
         }else{
 
             $user = Users::whereEmail($providerUser->getEmail())->first();
@@ -189,6 +197,10 @@ class UserController extends Controller
             $account->save();
 
             Session::put(['email' => $user['email']]);
+            
+            $accountInfo = $this->getUserInfoByEmail($user['email']);
+            Session::put(['avatar' => $accountInfo['Avatar']]);
+
             return redirect('/');
         }
     } 
@@ -278,8 +290,17 @@ class UserController extends Controller
 
 
     //CREATE SERVER
-
     public function createServer(Request $request){
+
+        $file = $request->file('image');
+        if($file){
+
+            $filename = time().$file->getClientOriginalName();
+            $path = $file->storeAs('room',$filename,'public');    
+        }else{
+
+            $path = '';
+        }
 
         $url = Str::random(10);
         $list = json_decode($this->getServerCreated());
@@ -287,7 +308,7 @@ class UserController extends Controller
         $data = [
             'Server_name' => $request->input('name'),
             'Private' => $request->input('private'),
-            'Image' => $request->input('image'),
+            'Image' => $path,
             'URL' => $url,
             'Status' => 1,
         ];
@@ -303,8 +324,8 @@ class UserController extends Controller
         }
     }
 
+
     //GET SERVER
-    
     public function getServer(){
         $jsonServerJoined = Users::where('Email',Session::get('email'))->first('JoinServer');
         $jsonServerCreated = Users::where('Email',Session::get('email'))->first('CreateServer');
@@ -339,10 +360,12 @@ class UserController extends Controller
         return json_encode($server) ;
     }
 
-    //JOIN SERVER
 
+    //JOIN SERVER
     public function joinServer(Request $request){
 
+        //$_SERVER['HTTP_ORIGIN'];
+        
         $url = $request->input('url');
         
         if($url !== ''){
@@ -410,4 +433,45 @@ class UserController extends Controller
         }
     }
 
+
+    //VIDEO CALL
+    public function getVideoCall(){
+        // return redirect('/'); 
+        return view('searchModal'); 
+    }
+
+
+    //GET USER INFO BY EMAIL
+    public function getUserInfoByEmail($email){
+        $account = Users::where('email',$email)->first(["Firstname","Lastname","Avatar","Cover_image"]);
+        return $account;
+    }
+
+
+    //USER INFO
+    //UPDATE INFO
+    public function updateProfile(Request $request){
+        $file = $request->file('image');
+        if($file){
+
+            $filename = time().$file->getClientOriginalName();
+            $path = $file->storeAs('avatar',$filename,'public');    
+        }else{
+
+            $path = '';
+        }
+
+        $data = [
+            'Avatar' => $path
+        ];
+        
+        $updateSuccess = Users::where('Email',Session::get('email'))->update($data);
+
+        if($updateSuccess){
+
+            Session::forget('avatar');
+            Session::put('avatar',$path);
+            return $path;
+        }
+    }
 }

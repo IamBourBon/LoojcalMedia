@@ -191,7 +191,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
@@ -215,6 +215,8 @@ return [
 
         //Google Oauth2 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        // Pusher
+        'Pusher' => Pusher\Pusher::class,
     ])->toArray(),
 
 ];
