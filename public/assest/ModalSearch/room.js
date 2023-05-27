@@ -150,6 +150,9 @@ let FullScreen = (e) => {
   //show minimize button
   e.target.parentElement.getElementsByClassName('btn-exitFullscreen')[0].classList.add('show')
   e.currentTarget.parentElement.getElementsByClassName('btn-exitFullscreen')[0].style.opacity = '1'
+
+  //hide avatar user
+  e.currentTarget.parentElement.parentElement.getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:0')
 }
 
 let escapeFullScreen = (e) => {
@@ -170,6 +173,11 @@ let escapeFullScreen = (e) => {
 
   //show fullscreen button
   e.target.parentElement.getElementsByClassName('btn-fullscreen')[0].classList.remove('hide')
+  
+  //Show avatar user
+  if(!e.currentTarget.parentElement.parentElement.getElementsByTagName('video')[0]){
+    e.currentTarget.parentElement.parentElement.getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:1')
+  }
   
   //browser esacpe fullscreen 
   if (document.exitFullscreen) {

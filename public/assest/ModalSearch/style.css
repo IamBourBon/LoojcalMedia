@@ -694,6 +694,7 @@ when users will click/enter button(link) browser will add a #id in a url and whe
   height: 60px;
   margin: 8px 0;
   list-style: none;
+  /* padding : 3px; */
 }
 
 .sidebar li .tooltip{
@@ -1795,7 +1796,7 @@ body.dark .btn-close-right {
   background-color: var(--message-bg);
   padding: 8px 16px;
   border-radius: 0 12px 12px 12px;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 16px;
   /* max-width: calc(100% - 32px); */
   word-break: break-all;

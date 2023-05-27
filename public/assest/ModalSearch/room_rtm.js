@@ -1,3 +1,4 @@
+const AvatarHeader = 4
 
 let handleMemberJoined = async (MemberId) => {
     console.log('A new member has joined the room:', MemberId)
@@ -38,6 +39,14 @@ let addMemberToDom = async (MemberId) => {
                             </div>`
             
             membersWrapper.insertAdjacentHTML('beforeend', memberItem)
+            
+            if(AvatarHeader > 0){
+                let memberAvatar = `<div class="participant profile-picture" id="avatar__${MemberId}">
+                                        <img src='/uploads/${avatar}'>
+                                    </div>`
+                document.getElementById('participants').insertAdjacentHTML('afterbegin',memberAvatar)
+                AvatarHeader -= 1
+            }
         }
     }
 
@@ -59,9 +68,11 @@ let handleMemberLeft = async (MemberId) => {
 
 let removeMemberFromDom = async (MemberId) => {
     let memberWrapper = document.getElementById(`member__${MemberId}__wrapper`)
+    let memberAvatar = document.getElementById(`avatar__${MemberId}`)
     let name = memberWrapper.getElementsByClassName('member_name')[0].textContent
     addBotMessageToDom(`${name} has left the room.`)
-        
+    
+    memberAvatar.remove()
     memberWrapper.remove()
 }
 

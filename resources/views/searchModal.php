@@ -225,9 +225,7 @@
 
                 <div class="chat-header">
                     <div class="participants" id="participants">
-                        <div class="participant profile-picture">
-                            <img src="/uploads/<?php echo $image?>">
-                        </div>
+                       
                         <div class="participant-more" id="members__count">...</div>
                     </div>
                 </div>

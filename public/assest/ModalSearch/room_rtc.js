@@ -73,6 +73,8 @@ let joinStream = async () => {
     document.getElementById('chatbox').style.display = 'block'
     document.getElementsByClassName('app-container')[0].style.display = 'flex'
     document.getElementsByClassName('video-call-actions')[0].style.display = 'flex'
+    document.getElementsByClassName('sidebar')[0].style.display = 'none'
+    document.getElementsByClassName('box')[0].style.margin = '0px'
 
     let xhttp = new XMLHttpRequest();
     let avatar = '';
@@ -151,8 +153,10 @@ let handleUserPublished = async (user, mediaType) => {
         document.getElementById('streams__container').insertAdjacentHTML('beforeend', player)
     }
 
-    document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:0')
-
+    if(document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0]){
+        document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:0')
+    }
+    
     if (mediaType === 'video') {
         user.videoTrack.play(`user-${user.uid}`)
         document.getElementById(`user-container-${user.uid}`).childNodes[1].childNodes[3].style.opacity = 0
@@ -224,7 +228,11 @@ let handleUsersJoined = async (user) => {
 
 let handleUsersUnpublished = async (user, mediaType) => {
 
-    document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:1')
+    if(!document.getElementById(`user-container-${user.uid}`).getElementsByClassName('full')[0]){
+        if(document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0]){
+            document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:1')
+        }
+    }
 
     if (mediaType === 'video') {
         document.getElementById(`user-container-${user.uid}`).childNodes[1].childNodes[3].style.opacity = 1
@@ -379,11 +387,9 @@ let leaveStream = async (e) => {
     document.getElementById('vc-lobby').style.display = 'block'
     document.getElementsByClassName('app-container')[0].style.display = 'none'
     document.getElementsByClassName('video-call-actions')[0].style.display = 'none'
-
-    // for (let i = 0; localTracks.length > i; i++) {
-    //     localTracks[i].stop()
-    //     localTracks[i].close()
-    // }
+    document.getElementsByClassName('sidebar')[0].style.display = 'block'
+    document.getElementsByClassName('box')[0].style.margin = '0px 0px 85px 0px'
+   
 
     if (localTracks.audioTrack != null && localTracks.audioTrack.isPlaying) {
         localTracks.audioTrack.stop()
@@ -420,6 +426,12 @@ let leaveStream = async (e) => {
     let listmember = document.getElementById('member__list')
     while (listmember.firstChild) {
         listmember.removeChild(listmember.firstChild)
+    }
+
+    //clear avatar member list
+    var listAvatar = document.querySelectorAll(".participant");
+    for(var i = 0; i < listAvatar.length; i++) {
+        listAvatar[i].parentElement.removeChild(listAvatar[i]);
     }
 
     //clear chat box in room
