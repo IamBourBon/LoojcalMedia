@@ -173,6 +173,7 @@ class UserController extends Controller
 
             $accountInfo = $this->getUserInfoByEmail($providerUser->getEmail());
             Session::put(['avatar' => $accountInfo['Avatar']]);
+            Session::put(['fullname' => $accountInfo['Lastname']." ".$accountInfo['Firstname']]);
             return redirect('/');
 
         }else{
@@ -200,6 +201,7 @@ class UserController extends Controller
             
             $accountInfo = $this->getUserInfoByEmail($user['email']);
             Session::put(['avatar' => $accountInfo['Avatar']]);
+            Session::put(['fullname' => $accountInfo['Lastname'].$accountInfo['Firstname']]);
 
             return redirect('/');
         }
@@ -473,5 +475,51 @@ class UserController extends Controller
             Session::put('avatar',$path);
             return $path;
         }
+    }
+
+
+    //FOLLOW USER
+    public function getFollow(){
+
+        $list = Users::where('Email',Session::get('email'))->first('Friends');
+        if($list['Friends'] === null){
+            return json_encode([]);
+        }else{
+            //TYPE JSON
+            return $list['Friends'];
+        }
+    }
+
+    public function followUser(Request $request){
+
+        $email = $request->input('email');
+        $list = json_decode($this->getFollow());
+
+        //push new
+        if(!in_array($email, $list)){
+            array_push($list, $email); 
+        }
+
+        //update
+        Users::where('Email',Session::get('email'))->update(['Friends' => json_encode($list)]);
+        
+        //TYPE JSON
+        return $this->getFollow();
+    }
+
+    public function unFollowUser(Request $request){
+        $email = $request->input('email');
+        $list = json_decode($this->getFollow());
+
+        //push new
+        if(($key = array_search($email, $list)) !== false) {
+            unset($list[$key]);
+        }
+
+        //update
+        Users::where('Email',Session::get('email'))->update(['Friends' => json_encode($list)]);
+        
+        //TYPE JSON
+        return $this->getFollow();
     }
 }

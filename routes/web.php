@@ -57,6 +57,10 @@ Route::post('/loadServer', [UserController::class, 'getServer']);
 //LOAD VIDEO CALL SERVER
 Route::get('/room/{id}', [UserController::class, 'getVideoCall']);
 
+//FOLLOW USER
+Route::post('/follow', [UserController::class, 'followUser']);
+Route::post('/unfollow', [UserController::class, 'unFollowUser']);
+
 
 //DESIGN ROUTE
 route::get('/design/listItem',function(){
