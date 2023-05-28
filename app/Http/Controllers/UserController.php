@@ -212,7 +212,7 @@ class UserController extends Controller
             
             $searchValue = Users::where('Firstname','LIKE',$request->input('search')."%")
             ->orWhere('Lastname','LIKE',$request->input('search')."%")
-            ->get(["Account_id","Firstname","Lastname","Email"])->toArray();
+            ->get(["Account_id","Firstname","Lastname","Email","Avatar"])->toArray();
 
             return json_encode($searchValue);
         }else{
@@ -267,7 +267,7 @@ class UserController extends Controller
 
             foreach($history as $value){
                 
-                $User = Users::where('Account_id',$value)->first(["Account_id","Firstname","Lastname","Email"]);
+                $User = Users::where('Account_id',$value)->first(["Account_id","Firstname","Lastname","Email","Avatar"]);
                 array_push($result, $User);
             }
 

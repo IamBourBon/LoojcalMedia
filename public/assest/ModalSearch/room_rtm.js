@@ -1,5 +1,3 @@
-const AvatarHeader = 4
-
 let handleMemberJoined = async (MemberId) => {
     console.log('A new member has joined the room:', MemberId)
     addMemberToDom(MemberId)
@@ -40,13 +38,12 @@ let addMemberToDom = async (MemberId) => {
             
             membersWrapper.insertAdjacentHTML('beforeend', memberItem)
             
-            if(AvatarHeader > 0){
-                let memberAvatar = `<div class="participant profile-picture" id="avatar__${MemberId}">
-                                        <img src='/uploads/${avatar}'>
-                                    </div>`
-                document.getElementById('participants').insertAdjacentHTML('afterbegin',memberAvatar)
-                AvatarHeader -= 1
-            }
+            
+            let memberAvatar = `<div class="participant profile-picture" id="avatar__${MemberId}">
+                                    <img src='/uploads/${avatar}'>
+                                </div>`
+            
+            document.getElementById('participants').insertAdjacentHTML('afterbegin',memberAvatar)
         }
     }
 

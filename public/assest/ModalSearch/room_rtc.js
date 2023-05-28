@@ -134,38 +134,78 @@ let handleUserPublished = async (user, mediaType) => {
     // remoteUsers[user.uid] = user
     await client.subscribe(user, mediaType)
 
-    let player = document.getElementById(`user-container-${user.uid}`)
+    // if (player === null) {
+    //     player = `<div class="video-participant" id="user-container-${user.uid}">
+    //                 <div class="participant-actions">
+    //                     <button class="btn-mute"></button>
+    //                     <button class="btn-camera"></button>
+    //                 </div>
+    //                 <div class="participant-actions">
+    //                     <button class="btn-mute"></button>
+    //                     <button class="btn-camera"></button>
+    //                 </div>
+    //                 <a href="#" class="name-tag">${remoteUsersName[user.uid]}</a>
+    //                 <div class="video-player" id="user-${user.uid}"></div>
+    //             </div>`
 
-    if (player === null) {
-        player = `<div class="video-participant" id="user-container-${user.uid}">
-                    <div class="participant-actions">
-                        <button class="btn-mute"></button>
-                        <button class="btn-camera"></button>
-                    </div>
-                    <div class="participant-actions">
-                        <button class="btn-mute"></button>
-                        <button class="btn-camera"></button>
-                    </div>
-                    <a href="#" class="name-tag">${remoteUsersName[user.uid]}</a>
-                    <div class="video-player" id="user-${user.uid}"></div>
-                </div>`
+    //     document.getElementById('streams__container').insertAdjacentHTML('beforeend', player)
+    // }
 
-        document.getElementById('streams__container').insertAdjacentHTML('beforeend', player)
+    let xhttp = new XMLHttpRequest();
+    let avatar = '';
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState === 4) {
+            // console.log('http',JSON.parse(xhttp.response.split(',')).Firstname)  
+            userDetails = JSON.parse(xhttp.response.split(','))
+
+            if (userDetails.Avatar === '' || userDetails.Avatar === null) {
+                avatar = 'avatar/avatar_default.jpg'
+            } else {
+                avatar = userDetails.Avatar
+            }
+
+            let player = document.getElementById(`user-container-${user.uid}`)
+            if (player === null) {
+                player = `<div class="video-participant" id="user-container-${user.uid}">
+                            <div class="participant-actions">
+                                <button class="btn-mute"></button>
+                                <button class="btn-camera"></button>
+                            </div>
+                            <img src="/uploads/${avatar}" class="participant-avatar">
+                            <div class="participant-fullscreen">
+                                <button class="btn-fullscreen" id="fullscreen-${user.uid}"></button>
+                                <button class="btn-exitFullscreen" id="exitFullscreen-${user.uid}"></button>
+                            </div>
+                            <a href="#" class="name-tag">${remoteUsersName[user.uid]}</a>
+                            <div class="video-player" id="user-${user.uid}"></div>
+                        </div>`
+
+
+                document.getElementById(`streams__container`).insertAdjacentHTML('beforeend', player)
+                document.getElementById(`user-container-${user.uid}`).addEventListener('mouseover', showIconFullScreen)
+                document.getElementById(`user-container-${user.uid}`).addEventListener('mouseout', hideIconFullScreen)
+                document.getElementById(`fullscreen-${user.uid}`).addEventListener('click', FullScreen)
+                document.getElementById(`exitFullscreen-${user.uid}`).addEventListener('click', escapeFullScreen)
+            }
+
+            if(document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0]){
+                document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:0')
+            }
+
+            if (mediaType === 'video') {
+                user.videoTrack.play(`user-${user.uid}`)
+                document.getElementById(`user-container-${user.uid}`).childNodes[1].childNodes[3].style.opacity = 0
+            }
+        
+            if (mediaType === 'audio') {
+                user.audioTrack.play()
+                document.getElementById(`user-container-${user.uid}`).childNodes[1].childNodes[1].style.opacity = 0
+            }
+        }
     }
 
-    if(document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0]){
-        document.getElementById(`user-container-${user.uid}`).getElementsByClassName('participant-avatar')[0].setAttribute('style', 'opacity:0')
-    }
-    
-    if (mediaType === 'video') {
-        user.videoTrack.play(`user-${user.uid}`)
-        document.getElementById(`user-container-${user.uid}`).childNodes[1].childNodes[3].style.opacity = 0
-    }
-
-    if (mediaType === 'audio') {
-        user.audioTrack.play()
-        document.getElementById(`user-container-${user.uid}`).childNodes[1].childNodes[1].style.opacity = 0
-    }
+    xhttp.open("GET", `/getProfile/${remoteUsersName[user.uid]}`, true)
+    xhttp.send()
 
 }
 

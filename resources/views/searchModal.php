@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="<?php echo csrf_token() ?>" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0"/>
+    <meta http-equiv="Expires" content="0" />
     <title>Document</title>
 
     <link rel="stylesheet" type='text/css' href="/assest/ModalSearch/style.css">
@@ -26,20 +26,20 @@
 
 <body class="dark" onload="defaultRoom()">
     <input type="hidden" id="session_email" value="<?php echo Session::get('email') ?>">
-    
+
     <!-- side bar -->
     <div class="sidebar">
         <div class="logo-details">
             <div class="icon-user" id="icon-user">
-                <?php 
-                    $image = '';
-                    if(Session::get('avatar') === '' || Session::get('avatar') === null){
-                        $image = 'avatar/avatar_default.jpg' ;
-                    }else{
-                        $image = Session::get('avatar');
-                    } 
+                <?php
+                $image = '';
+                if (Session::get('avatar') === '' || Session::get('avatar') === null) {
+                    $image = 'avatar/avatar_default.jpg';
+                } else {
+                    $image = Session::get('avatar');
+                }
                 ?>
-                <img src="/uploads/<?php echo $image?>" id="iconUserImage">
+                <img src="/uploads/<?php echo $image ?>" id="iconUserImage">
             </div>
             <div style="width:100%; height:3px; background:#7a7979;"></div>
         </div>
@@ -225,7 +225,9 @@
 
                 <div class="chat-header">
                     <div class="participants" id="participants">
-                       
+
+                    </div>
+                    <div class="participants-count">
                         <div class="participant-more" id="members__count">...</div>
                     </div>
                 </div>
@@ -358,8 +360,8 @@
             <div class="banner">
                 <input type="file" accept="image/*" id="AvaInp">
                 <i class="fa fa-pencil icon-pen-avatar"></i>
-                <img src="#" id="previewAvatar"/>
-                <img src="/uploads/<?php echo $image?>" id="AvatarUser">
+                <img src="#" id="previewAvatar" />
+                <img src="/uploads/<?php echo $image ?>" id="AvatarUser">
                 <!-- <svg viewBox="0 0 100 100">
                     <path d="m38.977 59.074c0 2.75-4.125 2.75-4.125 0s4.125-2.75 4.125 0"></path>
                     <path d="m60.477 59.074c0 2.75-4.125 2.75-4.125 0s4.125-2.75 4.125 0"></path>
@@ -369,10 +371,12 @@
             </div>
             <div class="menu">
                 <div class="opener" id="opener"><span></span><span></span><span></span></div>
-                <div class="logout" id="logout"><p>Đăng xuất</p></div>
+                <div class="logout" id="logout">
+                    <p>Đăng xuất</p>
+                </div>
             </div>
             <h2 class="Profile-name">Morgan Sweeney</h2>
-            <div class="Profile-title">Ant Collector</div>
+            <div class="Profile-title"><?php echo Session::get('email') ?></div>
             <div class="actions">
                 <div class="follow-info">
                     <h2><a href="#"><span>12</span><small>Followers</small></a></h2>
@@ -390,7 +394,7 @@
                 <div id="stream__box">
                 </div>
                 <div class="video-call-wrapper" id="streams__container">
-                    
+
                 </div>
 
                 <div class="video-call-actions" id="video-call-actions">
@@ -444,12 +448,36 @@
             <div class="notify-action">
                 <button id="cancel-change">Hủy</button>
                 <button id="save-change">Lưu thay đổi</button>
-            </div> 
+            </div>
         </div>
     </div>
 
     <div class="fullscreen" id="fullscreen">
     </div>
+
+    <!-- search user profile -->
+    <div class="popup" id="profile">
+        <div class="slider" id="previewProfile">
+            <div class="card" style="position: relative;left: 40px;">
+                <div class="banner">
+                    <img src="" id="AvatarUser2">
+                </div>
+                <div class="menu">
+                    <div class="close" onclick="removeHashURL()">x</div>
+                </div>
+                <h2 class="Profile-name"></h2>
+                <div class="Profile-title"></div>
+                <div class="actions">
+                    <div class="follow-info">
+                        <h2><a href="#"><span>12</span><small>Followers</small></a></h2>
+                        <h2><a href="#"><span>1000</span><small>Following</small></a></h2>
+                    </div>
+                    <div class="follow-btn"><button>Follow</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- search user profile -->
 
     <!-- modal create server -->
     <div class="popup" id="popup">
@@ -522,22 +550,22 @@
 
 
     <script>
-        function removeHashURL(){
+        function removeHashURL() {
             window.location.hash = '';
-            window.history.pushState(null,'',window.location.origin + window.location.pathname)
+            window.history.pushState(null, '', window.location.origin + window.location.pathname)
         }
 
-        function defaultRoom(){
-            if(window.location.pathname === '/'){
+        function defaultRoom() {
+            if (window.location.pathname === '/') {
 
-                $('#join-btn').attr('style','display:none')
+                $('#join-btn').attr('style', 'display:none')
 
                 $('#suggestSearch').addClass('active')
                 $('#userInfo').addClass('active')
-            }else{
+            } else {
 
-                $('#suggestSearch').attr('style','visibility:hidden')
-                $('#userInfo').attr('style','visibility:hidden')
+                $('#suggestSearch').attr('style', 'visibility:hidden')
+                $('#userInfo').attr('style', 'visibility:hidden')
 
                 $('#suggestSearch').remove('active')
                 $('#userInfo').remove('active')
@@ -560,6 +588,7 @@
             let originLocationBottom = $('.sidebar .nav-list').outerHeight();
 
             let room_img_default = 'room/room_default.jpg'
+            let avatar_img_default = 'avatar/avatar_default.jpg'
 
             let heightJoin = $('.popup__content__join').outerHeight();
             let heightSetting = $('.popup__content__create__setting').outerHeight();
@@ -594,8 +623,14 @@
                         $.each(data, function(key, value) {
 
                             if ($.inArray(value.Account_id, arrSuggest) === -1 && key < 5) {
-                                //html = '<a href="/' + value.Email + '"><div id=sg' + value.Account_id + ' name=' + value.Account_id + ' style="position: relative;background-color: #f4f2f2; padding: 10px; border-radius: 10px; color:black"><img src="https://boxgaixinh.net/wp-content/uploads/2023/02/avatar-cute-meo-2.1.jpg" style="width: 65px !important; padding-right:15px; border-radius: 30px"><p id="suggestName' + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p></div></a>';
-                                html = '<a href="/' + value.Email + '"><div id=sg' + value.Account_id + ' name=' + value.Account_id + ' class="suggest"><img src="https://boxgaixinh.net/wp-content/uploads/2023/02/avatar-cute-meo-2.1.jpg"><p id="suggestName' + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p></div></a>';
+
+                                let avatar = ''
+                                if (value.Avatar === '' || value.Avatar === null) {
+                                    avatar = avatar_img_default
+                                } else {
+                                    avatar = value.Avatar
+                                }
+                                html = `<a href="#profile" id="${value.Email}"><div id=sg` + value.Account_id + ' name=' + value.Account_id + ` class="suggest"><img src="/uploads/${avatar}"><p id="suggestName` + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p></div></a>';
                                 arrSuggest.push(value.Account_id);
                                 $('.searchItem').append(html);
                             }
@@ -665,6 +700,8 @@
                             }
                         });
                     }
+
+                    console.log('click', event.currentTarget)
                 });
             });
 
@@ -718,7 +755,14 @@
 
                                         arrHistory.push(value.Account_id);
                                         arrSuggest.push(value.Account_id);
-                                        html = '<a href="/' + value.Email + '"><div id=sg' + value.Account_id + ' name=' + value.Account_id + ' class="suggest"><img src="https://boxgaixinh.net/wp-content/uploads/2023/02/avatar-cute-meo-2.1.jpg"><p id="suggestName' + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p><div id="removeHis' + value.Account_id + '"  name=' + value.Account_id + ' style="display: inline-block; float: right; width: 27px; text-align: center; font-size: large; margin-top: 16px;">x</div></div></a>';
+
+                                        let avatar = ''
+                                        if (value.Avatar === '' || value.Avatar === null) {
+                                            avatar = avatar_img_default
+                                        } else {
+                                            avatar = value.Avatar
+                                        }
+                                        html = `<a href="#profile" id="${value.Email}"><div id=sg` + value.Account_id + ' name=' + value.Account_id + ` class="suggest"><img src="/uploads/${avatar}"><p id="suggestName` + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p><div id="removeHis' + value.Account_id + '"  name=' + value.Account_id + ' style="display: inline-block; float: right; width: 27px; text-align: center; font-size: large; margin-top: 16px;">x</div></div></a>';
                                         $('.searchItem').append(html);
                                     }
                                 });
@@ -738,7 +782,6 @@
                         }
                     });
 
-
                 } else if (search === '' && !$.isEmptyObject(arrHistory)) {
                     //DISPLAY history
                     $.each(arrHistory, function(key, value) {
@@ -750,6 +793,20 @@
                     });
                 }
 
+                //CLICK iTEM in HISTORY
+                $(".searchItem a div").click(function(event) {
+                    event.stopPropagation();
+                    let email = event.currentTarget.parentElement.id
+                    let fullname = event.currentTarget.getElementsByClassName('suggest-name')[0].innerHTML
+                    let image = event.currentTarget.getElementsByTagName('img')[0].src.replace(window.location.origin,"")
+
+                    document.getElementById('previewProfile').getElementsByClassName('Profile-title')[0].innerText = email
+                    document.getElementById('previewProfile').getElementsByClassName('Profile-name')[0].innerText = fullname
+                    document.getElementById('AvatarUser2').src = image
+
+                    
+                    console.log('click', event.currentTarget)
+                });
 
                 //Hover change COLOR
                 $(".searchItem a div").hover(function() {
@@ -920,15 +977,15 @@
                 }
             })
 
-            
+
 
             //REQUEST CREATE SERVER
-            $('#create-server').click(function() { 
+            $('#create-server').click(function() {
 
                 let fromData = new FormData();
-                fromData.append('private',private_server)
-                fromData.append('name',$('#serverID').val())
-                fromData.append('image',$('#imgInp')[0].files[0])
+                fromData.append('private', private_server)
+                fromData.append('name', $('#serverID').val())
+                fromData.append('image', $('#imgInp')[0].files[0])
 
                 removeHashURL()
 
@@ -967,11 +1024,11 @@
                     }
 
                 }).done(function(response) {
-                    console.log('hostname',response)
+                    console.log('hostname', response)
                     reloadServer();
                 });
             });
-  
+
 
             //LOAD SERVER
             function reloadServer() {
@@ -983,16 +1040,16 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                 }).done(function(response) {
-                    
-                    if(JSON.parse(response).length !== 0){
+
+                    if (JSON.parse(response).length !== 0) {
 
                         $.each(JSON.parse(response), function(key, value) {
 
                             if (!server.includes(value.URL)) {
-                                
-                                if(value.Image !== ''){
+
+                                if (value.Image !== '') {
                                     img_src = value.Image
-                                }else{
+                                } else {
                                     img_src = room_img_default
                                 }
 
@@ -1009,11 +1066,11 @@
                         });
                     }
 
-                    
+
                     //EFFECT current room
                     $('.nav-list li a').each(function() {
 
-                        if(window.location.pathname.split('/')[2] == $(this).attr('id')){
+                        if (window.location.pathname.split('/')[2] == $(this).attr('id')) {
                             $(this).addClass("focusIn")
                         }
                     })
@@ -1053,10 +1110,10 @@
 
             //USER INFO
             $('#icon-user').click(function() {
-                $('#join-btn').attr('style','display:none')
+                $('#join-btn').attr('style', 'display:none')
 
-                $('#suggestSearch').attr('style','visibility:visible')
-                $('#userInfo').attr('style','visibility:visible')
+                $('#suggestSearch').attr('style', 'visibility:visible')
+                $('#userInfo').attr('style', 'visibility:visible')
 
                 $('#suggestSearch').addClass('active')
                 $('#userInfo').addClass('active')
@@ -1068,35 +1125,35 @@
                 if (file) {
                     $('#previewAvatar').css('opacity', '1');
                     previewAvatar.src = URL.createObjectURL(file);
-                    $('#notify-change').css('display','flex')
+                    $('#notify-change').css('display', 'flex')
                 } else {
                     previewAvatar.src = "#";
                     $('#previewAvatar').css('opacity', '0');
-                    $('#notify-change').css('display','none')
+                    $('#notify-change').css('display', 'none')
                 }
             })
 
             //LOGOUT
-            $('#opener').click(function(){
+            $('#opener').click(function() {
                 $('#logout').toggleClass('active')
             })
 
-            $('#logout').click(function(){
+            $('#logout').click(function() {
                 $('#logout').toggleClass('active')
                 location.assign("/logout");
             })
 
             //CANCEL OR SAVE CHANGE
-            $("#cancel-change").click(function(){
+            $("#cancel-change").click(function() {
                 previewAvatar.src = "#";
                 $('#previewAvatar').css('opacity', '0');
-                $('#notify-change').css('display','none')
+                $('#notify-change').css('display', 'none')
                 $('#AvaInp').replaceWith($("#AvaInp").val('').clone(true))
             })
 
             $("#save-change").click(() => {
                 let fromData = new FormData();
-                fromData.append('image',$('#AvaInp')[0].files[0])
+                fromData.append('image', $('#AvaInp')[0].files[0])
 
                 $.ajax({
                     async: true,
@@ -1112,14 +1169,14 @@
                     enctype: 'multipart/form-data'
 
                 }).done(function(response) {
-                    
-                    AvatarUser.src = '/uploads/'+response
-                    iconUserImage.src = '/uploads/'+response
+
+                    AvatarUser.src = '/uploads/' + response
+                    iconUserImage.src = '/uploads/' + response
                 });
-                
+
                 previewAvatar.src = "#";
                 $('#previewAvatar').css('opacity', '0');
-                $('#notify-change').css('display','none')
+                $('#notify-change').css('display', 'none')
                 $('#AvaInp').replaceWith($("#AvaInp").val('').clone(true))
             })
         })
