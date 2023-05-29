@@ -107,7 +107,7 @@ button::-moz-focus-inner {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 101;
 
   display: none;
   justify-content: center;
@@ -2542,6 +2542,7 @@ body.dark .btn-close-right {
 }
 
 .Friend-item{
+  position: relative;
   display: inline-flex;
   padding: 10px 12px;
   width: 100%;
@@ -2564,6 +2565,17 @@ body.dark .btn-close-right {
   height: 50px;
   padding-top: 11px;
   color: white;
+}
+
+.Friend-item .userOnline{
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  top: 47px;
+  left: 55px;
+  background: #7fff7f;
+  opacity: 0;
 }
 
 .Friend-item .btn-invite{

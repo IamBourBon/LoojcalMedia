@@ -199,7 +199,78 @@ let toggleListMember = async () => {
     document.getElementById('member__list').classList.toggle('active');
 }
 
+//GLOBAL
+let handleMemberJoined_Global = async (MemberId) => {
+    
+    let name = await Global_rtmClient.getUserAttributesByKeys(MemberId, ['name'])
+    
+    friendList = document.getElementById('listFriend').getElementsByClassName('Friend-item')
+    
+    for(i = 0; i < friendList.length; i++){
+        console.log('join', name.name)
+        console.log('join friend', friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name)
+        if(friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name){
+            friendList[i].getElementsByClassName('userOnline')[0].style.opacity = 1
+        }
+    }
+    // addMemberToDom(MemberId)
+
+    // let members = await channel.getMembers()
+    // updateMemberTotal(members)
+
+    
+    // addBotMessageToDom(`Welcome to the room ${name}! 👋`)
+}
+
+let handleMemberLeft_Global = async (MemberId) => {
+    console.log('leave',MemberId)
+    let name = await Global_rtmClient.getUserAttributesByKeys(MemberId, ['name'])
+    
+    friendList = document.getElementById('listFriend').getElementsByClassName('Friend-item')
+    
+    for(i = 0; i < friendList.length; i++){
+        console.log('leave', name.name)
+        console.log('leave friend', friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name)
+        if(friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name){
+            friendList[i].getElementsByClassName('userOnline')[0].style.opacity = 0
+        }
+    }
+    
+    // removeMemberFromDom(MemberId)
+
+    // let members = await channel.getMembers()
+    // updateMemberTotal(members)
+}
+
+let handleChannelMessage_Global = async (messageData, MemberId) => {
+    console.log('A new message was received')
+    let data = JSON.parse(messageData.text)
+
+    if(data.type === 'chat'){
+        addMessageToDom(data.displayName, data.message)
+    }
+
+    if(data.type === 'user_left'){
+        document.getElementById(`user-container-${data.uid}`).remove()
+
+        // if(userIdInDisplayFrame === `user-container-${uid}`){
+        //     displayFrame.style.display = null
+    
+        //     for(let i = 0; videoFrames.length > i; i++){
+        //         videoFrames[i].style.height = '100%'
+        //         videoFrames[i].style.width = '20%'
+        //     }
+        // }
+    }
+}
+
+let leaveCommunity = async () => {
+    await Global_channel.leave()
+    await Global_rtmClient.logout()
+}
+
 window.addEventListener('beforeunload', leaveChannel)
+window.addEventListener('beforeunload', leaveCommunity)
 document.getElementById('members__count').addEventListener('click', toggleListMember)
 
 let messageForm = document.getElementById('message__form')

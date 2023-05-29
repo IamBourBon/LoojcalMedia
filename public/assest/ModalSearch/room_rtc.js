@@ -16,9 +16,45 @@ let channel;
 
 let roomId = window.location.pathname.split('/')[2];
 
-if (!roomId) {
-    roomId = 'FmYLpQPKpW'
+let Global_room = 'community'
+let Global_token = null;
+let Global_client;
+let Global_rtmClient;
+let Global_channel;
+
+if (window.location.pathname == "/"){
+
+    let joinCommunityInit = async () => {
+
+        Global_rtmClient = await AgoraRTM.createInstance(APP_ID)
+        await Global_rtmClient.login({ uid, Global_token })
+    
+        await Global_rtmClient.addOrUpdateLocalUserAttributes({'name': displayName})
+    
+        Global_channel = await Global_rtmClient.createChannel(Global_room)
+        await Global_channel.join()
+    
+        Global_channel.on('MemberJoined', handleMemberJoined_Global)
+        Global_channel.on('MemberLeft', handleMemberLeft_Global)
+        // Global_channel.on('ChannelMessage', handleChannelMessage_Global)
+    
+        // getMembers()
+    
+        // Global_client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })
+    
+        // await Global_client.join(APP_ID, Global_room, Global_token, uid)
+        // Global_client.enableAudioVolumeIndicator()
+    
+        // Global_client.on('user-joined', handleUsersJoined)
+        // Global_client.on('user-published', handleUserPublished)
+        // Global_client.on('volume-indicator', handleUserTalk)
+        // Global_client.on('user-left', handleUserLeft)
+        // Global_client.on('user-unpublished', handleUsersUnpublished)
+    }
+    
+    joinCommunityInit()
 }
+
 
 let displayName = sessionStorage.getItem('display_name')
 if (!displayName) {

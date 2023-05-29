@@ -458,7 +458,7 @@
     <!-- search user profile -->
     <div class="popup" id="profile">
         <div class="slider" id="previewProfile">
-            <div class="card" style="position: relative;left: 40px;">
+            <div class="card active" style="position: relative;left: 40px;">
                 <div class="banner">
                     <img src="" id="AvatarUser2">
                 </div>
@@ -597,6 +597,7 @@
 
                                         itemUser = `<div class="Friend-item">
                                             <img src="/uploads/${avatar}">
+                                            <div class="userOnline"></div>
                                             <p class="friend_name">${value}</p>
 
                                             <div class="btn-invite">Invite</div>
