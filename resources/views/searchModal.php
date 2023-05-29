@@ -380,6 +380,12 @@
             </div>
         </div>
 
+        <div class="card" id="listFriend">
+            <div class="Friend__wrapper">
+
+            </div>
+        </div>
+
         <div class="video-call-lobby" id="vc-lobby">
         </div>
 
@@ -433,7 +439,7 @@
 
                 </div>
 
-                <a href="#" class="link-2"></a>
+                <a href="javascript:removeHashURL()" class="link-2"></a>
             </div>
         </div>
 
@@ -557,13 +563,63 @@
 
                 $('#suggestSearch').addClass('active')
                 $('#userInfo').addClass('active')
+                $("#listFriend").addClass('listFriend')
+
+                $.ajax({
+                    async: false,
+                    type: 'GET',
+                    url: '/getFollow',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(res) {
+
+                        data = JSON.parse(res);
+
+                        if (!$.isEmptyObject(data)) {
+
+                            $.each(data, function(key, value) {
+
+                                $.ajax({
+                                    async: false,
+                                    type: 'GET',
+                                    url: `getProfile/${value}`,
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                    success: function(res) {
+
+                                        if (res.Avatar === '' || res.Avatar === null) {
+                                            avatar = 'avatar/avatar_default.jpg'
+                                        } else {
+                                            avatar = res.Avatar
+                                        }
+
+                                        itemUser = `<div class="Friend-item">
+                                            <img src="/uploads/${avatar}">
+                                            <p class="friend_name">${value}</p>
+
+                                            <div class="btn-invite">Invite</div>
+                                        </div>`
+
+                                        document.getElementById('listFriend').getElementsByClassName('Friend__wrapper')[0].insertAdjacentHTML('afterbegin', itemUser)
+                                    }
+                                });
+
+                            });
+                        }
+                    }
+                });
+
             } else {
 
                 $('#suggestSearch').attr('style', 'visibility:hidden')
                 $('#userInfo').attr('style', 'visibility:hidden')
+                $('#listFriend').attr('style', 'visibility:hidden')
 
-                $('#suggestSearch').remove('active')
-                $('#userInfo').remove('active')
+                $('#suggestSearch').removeClass('active')
+                $('#userInfo').removeClass('active')
+                $('#listFriend').removeClass('listFriend')
             }
         }
 
@@ -670,7 +726,7 @@
                     $("#sg" + id).css('color', 'white');
                 });
 
-                if($(this).val() === '' && !$.isEmptyObject(arrHistory)) {
+                if ($(this).val() === '' && !$.isEmptyObject(arrHistory)) {
                     //DISPLAY history
                     $.each(arrHistory, function(key, value) {
                         if (value !== -1) {
@@ -762,7 +818,7 @@
                 })
 
                 //REMOVE history
-                $(".searchItem a div div").on('click',function(event) {
+                $(".searchItem a div div").on('click', function(event) {
                     console.log('remove')
                     event.stopImmediatePropagation();
                     id = $(this).attr('name');
@@ -798,19 +854,38 @@
                     event.preventDefault();
                 })
 
-                //CLICK iTEM in HISTORY
-                $(".searchItem a div").on('click',function(event) {
+                //CLICK ITEM in HISTORY
+                $(".searchItem a div").on('click', function(event) {
                     console.log('click2', event.currentTarget)
                     event.stopImmediatePropagation();
-                    
+
                     let email = event.currentTarget.parentElement.id
                     let fullname = event.currentTarget.getElementsByClassName('suggest-name')[0].innerHTML
-                    let image = event.currentTarget.getElementsByTagName('img')[0].src.replace(window.location.origin,"")
+                    let image = event.currentTarget.getElementsByTagName('img')[0].src.replace(window.location.origin, "")
 
                     document.getElementById('previewProfile').getElementsByClassName('Profile-title')[0].innerText = email
                     document.getElementById('previewProfile').getElementsByClassName('Profile-name')[0].innerText = fullname
                     document.getElementById('AvatarUser2').src = image
-                    
+
+                    $.ajax({
+                        async: true,
+                        type: 'GET',
+                        url: '/getFollow',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(res) {
+                            arr = JSON.parse(res)
+                            if (arr.includes(email)) {
+                                document.getElementById('follow').style.display = 'none'
+                                document.getElementById('unfollow').style.display = 'block'
+                            } else {
+                                document.getElementById('unfollow').style.display = 'none'
+                                document.getElementById('follow').style.display = 'block'
+                            }
+                        }
+                    });
+
                     if ($(this).attr('name') !== null) {
                         $.ajax({
                             async: false,
@@ -886,8 +961,8 @@
                 }
             });
 
-            //DRAG search modal
-            $('.modal').draggable();
+            // //DRAG search modal
+            // $('.modal').draggable();
 
             //CREATE SERVER animation
             $('.btn-setting').click(function() {
@@ -1046,7 +1121,7 @@
             reloadServer();
 
 
-            // EFFECT scroll sidebar
+            //EFFECT scroll sidebar
             $('.sidebar ul').bind('mousewheel', function(e) {
 
                 if (e.originalEvent.wheelDelta / 120 > 0) {
@@ -1080,9 +1155,14 @@
 
                 $('#suggestSearch').attr('style', 'visibility:visible')
                 $('#userInfo').attr('style', 'visibility:visible')
+                $('#listFriend').attr('style', 'visibility:visible')
 
                 $('#suggestSearch').addClass('active')
                 $('#userInfo').addClass('active')
+                $('#listFriend').addClass('listFriend')
+
+                window.location.pathname = '/';
+                window.history.replaceState(null, '', window.location.origin + window.location.pathname)
             })
 
             //PREVIEW image AVATAR before upload
@@ -1147,9 +1227,9 @@
             })
 
             //FOLLOW USER
-            $('#follow').click(function(e){
+            $('#follow').click(function(e) {
                 email = e.currentTarget.parentElement.parentElement.getElementsByClassName('Profile-title')[0].innerText
-                
+
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -1160,16 +1240,15 @@
                     data: {
                         email: email
                     }
-                }).done(function(response) {
-                    
-                });
+                })
 
-                console.log('follow',e.currentTarget.parentElement.parentElement)
+                window.location.hash = '';
+                window.history.pushState(null, '', window.location.origin + window.location.pathname)
             })
 
-            $('#unfollow').click(function(e){
+            $('#unfollow').click(function(e) {
                 email = e.currentTarget.parentElement.parentElement.getElementsByClassName('Profile-title')[0].innerText
-                
+
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -1180,11 +1259,10 @@
                     data: {
                         email: email
                     }
-                }).done(function(response) {
-                    
-                });
+                })
 
-                console.log('follow',e.currentTarget.parentElement.parentElement)
+                window.location.hash = '';
+                window.history.pushState(null, '', window.location.origin + window.location.pathname)
             })
         })
     </script>

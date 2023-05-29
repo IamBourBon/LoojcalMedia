@@ -356,9 +356,11 @@ when users will click/enter button(link) browser will add a #id in a url and whe
   width: 45%;
   height: 60px;
   z-index: 99;
+  top: -100px;
 }
 
 .top-search.active {
+  top: 0;
   margin: 30px 27.5%;
   transition: 0.5s;
 }
@@ -604,7 +606,7 @@ when users will click/enter button(link) browser will add a #id in a url and whe
   height: 100%;
   width: 84px;
   background:#1D2032;
-  z-index: 100;
+  z-index: 101;
   transition: all 0.5s ease;
 }
 
@@ -2495,7 +2497,7 @@ body.dark .btn-close-right {
 /*----------------------- details info user ------------------------*/
 .card {
   background-color: #1D2032;
-  width: 360px;
+  width: 0px;
   height: 500px;
   display: flex;
   flex-direction: column;
@@ -2509,8 +2511,75 @@ body.dark .btn-close-right {
 }
 
 .card.active{
+  width: 360px;
   left: 120px;
   transition: 0.5s;
+  z-index: 100;
+}
+
+#listFriend::-webkit-scrollbar {
+  width: 3px;
+}
+
+#listFriend::-webkit-scrollbar-thumb {
+  background-color: slategrey;
+  outline: 0px solid slategrey;
+}
+
+
+.card.listFriend{
+  width: 410px;
+  left: 515px;
+  transition: 1s;
+  border: 3px solid var(--main-color);
+  overflow-y: scroll;
+  box-shadow: 0px 0rem 0.75rem var(--main-color);
+}
+
+.Friend__wrapper{
+  position: relative;
+  top: 20px;
+}
+
+.Friend-item{
+  display: inline-flex;
+  padding: 10px 12px;
+  width: 100%;
+  overflow: hidden;
+  height: 70px;
+}
+
+.Friend-item img{
+  margin-left: 3%;
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.Friend-item .friend_name{
+  display: inline-block;
+  margin-left: 4%;
+  width: 60%;
+  height: 50px;
+  padding-top: 11px;
+  color: white;
+}
+
+.Friend-item .btn-invite{
+  display: inline-block;
+  width: 60px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background: #6A5ACD;
+  color: white;
+  border-radius: 5px;
+  margin-top: 5px;
+  font-size: 16px;
+  text-align: center;
+  padding: 7px 0px;
+  cursor: pointer;
 }
 
 .card .banner {
@@ -2756,7 +2825,7 @@ body.dark .btn-close-right {
   color: inherit;
   font: inherit;
   font-weight: bold;
-  background-color: #6f74ff;
+  background-color: #eb4343;
   width: 100%;
   border: none;
   padding: 1rem;
@@ -2766,11 +2835,9 @@ body.dark .btn-close-right {
   transition: background-color 100ms ease-in-out, transform 200ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 .card .actions .unfollow-btn button:hover {
-  background-color: #565BFF;
   transform: scale(1.1);
 }
 .card .actions .unfollow-btn button:active {
-  background-color: #565BFF;
   transform: scale(1);
 }
 

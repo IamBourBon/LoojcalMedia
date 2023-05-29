@@ -511,15 +511,14 @@ class UserController extends Controller
         $email = $request->input('email');
         $list = json_decode($this->getFollow());
 
-        //push new
-        if(($key = array_search($email, $list)) !== false) {
-            unset($list[$key]);
-        }
-
+        //compare 2 array 
+        $newlist = array_diff($list,array($email));
+        sort($newlist);
+        
         //update
-        Users::where('Email',Session::get('email'))->update(['Friends' => json_encode($list)]);
+        Users::where('Email',Session::get('email'))->update(['Friends' => json_encode($newlist)]);
         
         //TYPE JSON
-        return $this->getFollow();
+        return ;
     }
 }
