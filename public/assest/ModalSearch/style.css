@@ -361,7 +361,7 @@ when users will click/enter button(link) browser will add a #id in a url and whe
 
 .top-search.active {
   top: 0;
-  margin: 30px 27.5%;
+  margin: 30px 25%;
   transition: 0.5s;
 }
 
@@ -2277,9 +2277,14 @@ body.dark .btn-close-right {
   padding-left: 15px;
   padding-right: 15px;
   position: absolute;
-  top: 60%;
+  top: 150%;
   left: 50%;
   z-index: 99;
+}
+
+.video-action-button.joincall.active {
+  top: 60%;
+  transition: 1s;
 }
 
 .video-action-button.magnifier {
@@ -2546,7 +2551,6 @@ body.dark .btn-close-right {
   display: inline-flex;
   padding: 10px 12px;
   width: 100%;
-  overflow: hidden;
   height: 70px;
 }
 
@@ -2579,7 +2583,7 @@ body.dark .btn-close-right {
 }
 
 .Friend-item .btn-invite{
-  display: inline-block;
+  display: none;
   width: 60px;
   height: 40px;
   border: none;
@@ -2592,6 +2596,64 @@ body.dark .btn-close-right {
   text-align: center;
   padding: 7px 0px;
   cursor: pointer;
+}
+
+.Server-item{
+  position: relative;
+  display: inline-flex;
+  padding: 10px 12px;
+  width: 100%;
+  height: 55px;
+  cursor: pointer;
+}
+
+.Server-item:hover{
+  background-color: #6A5ACD;
+}
+
+.Server-item img{
+  margin-left: 3%;
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.Server-item .server_name{
+  display: inline-block;
+  margin-left: 4%;
+  width: 60%;
+  height: 50px;
+  padding-top: 7px;
+  color: white;
+}
+
+.invite-list-server{
+  width: 200px;
+  height: 150px;
+  position: absolute;
+  background: var(--app-background);
+  z-index: 100;
+  right: 25px;
+  top: 60px;
+  border-radius: 5px;
+  display: none;
+  box-shadow: 0px 1rem 1.5rem rgb(0 0 0 / 50%);
+  overflow-y: scroll;
+}
+
+.invite-list-server.active{
+  display: block;
+  transition: 1s;
+}
+
+.invite-list-server::-webkit-scrollbar {
+  width: 0px;
+}
+ 
+.invite-list-server::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  outline: 0px solid slategrey;
 }
 
 .card .banner {
@@ -2916,4 +2978,111 @@ body.dark .btn-close-right {
 
 .notify-action button:last-child:hover{
   background: #6aad78;
+}
+
+.notify-invite{
+  position: absolute;
+  right: 100px;
+  top: -100px;
+  border: none;
+  background-color: #6A5ACD;
+  border-radius: 4px;
+  color: var(--message-text);
+  width: 50px;
+  height: 50px;
+  display: block; 
+  z-index: 101;
+  box-shadow: 0px 1rem 1.5rem rgb(0 0 0 / 50%);
+  cursor: pointer;
+}
+
+.notify-invite.active{
+  top: 45px;
+}
+
+.notify-invite .count-notify{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ff3232;
+  top: -7px;
+  right: -7px;
+  opacity: 0;
+}
+
+.list-notify{
+  position: absolute;
+  width: 350px;
+  height: 100px;
+  background: #303552;
+  right: 0;
+  top: 57px;
+  border-radius: 5px;
+  box-shadow: 0px 1rem 1.5rem rgb(0 0 0 / 50%);
+  visibility: hidden;
+  transition: 0.5s;
+  overflow-y: scroll;
+}
+
+.list-notify.active{
+  height: 400px;
+  visibility: visible;
+  transition: 0.5s;
+}
+
+
+.list-notify::-webkit-scrollbar {
+  width: 4px;
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 12px;
+  outline: none;
+}
+
+.Notify-item{
+  position: relative;
+  display: inline-flex;
+  padding: 10px 12px;
+  width: 100%;
+  height: 70px;
+}
+
+.Notify-item:hover{
+  background: #6A5ACD;
+}
+
+.Notify-item img{
+  margin-left: 3%;
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  border-radius: 7px;
+}
+
+.Notify-item .Notify_message{
+  display: inline-block;
+  margin: 0px 2%;
+  width: 60%;
+  height: 50px;
+  padding-top: 11px;
+  color: white;
+}
+
+.Notify-item .btn-join{
+  display: inline-block;
+  width: 60px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background: #7fff7f;
+  color: #303552;
+  border-radius: 5px;
+  margin-top: 5px;
+  font-size: 16px;
+  text-align: center;
+  padding: 11px 0px;
+  cursor: pointer;
 }

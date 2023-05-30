@@ -36,9 +36,9 @@ if (window.location.pathname == "/"){
     
         Global_channel.on('MemberJoined', handleMemberJoined_Global)
         Global_channel.on('MemberLeft', handleMemberLeft_Global)
-        // Global_channel.on('ChannelMessage', handleChannelMessage_Global)
+        Global_channel.on('ChannelMessage', handleChannelMessage_Global)
     
-        // getMembers()
+        getMembers_Global()
     
         // Global_client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })
     

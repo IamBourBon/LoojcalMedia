@@ -201,72 +201,78 @@ let toggleListMember = async () => {
 
 //GLOBAL
 let handleMemberJoined_Global = async (MemberId) => {
-    
     let name = await Global_rtmClient.getUserAttributesByKeys(MemberId, ['name'])
-    
+
     friendList = document.getElementById('listFriend').getElementsByClassName('Friend-item')
     
     for(i = 0; i < friendList.length; i++){
-        console.log('join', name.name)
-        console.log('join friend', friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name)
         if(friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name){
             friendList[i].getElementsByClassName('userOnline')[0].style.opacity = 1
+            friendList[i].getElementsByClassName('btn-invite')[0].style.display = 'inline-block'
         }
     }
-    // addMemberToDom(MemberId)
-
-    // let members = await channel.getMembers()
-    // updateMemberTotal(members)
-
-    
-    // addBotMessageToDom(`Welcome to the room ${name}! 👋`)
 }
 
 let handleMemberLeft_Global = async (MemberId) => {
-    console.log('leave',MemberId)
     let name = await Global_rtmClient.getUserAttributesByKeys(MemberId, ['name'])
     
     friendList = document.getElementById('listFriend').getElementsByClassName('Friend-item')
     
     for(i = 0; i < friendList.length; i++){
-        console.log('leave', name.name)
-        console.log('leave friend', friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name)
         if(friendList[i].getElementsByClassName('friend_name')[0].innerText == name.name){
             friendList[i].getElementsByClassName('userOnline')[0].style.opacity = 0
+            friendList[i].getElementsByClassName('btn-invite')[0].style.display = 'none'
         }
     }
-    
-    // removeMemberFromDom(MemberId)
-
-    // let members = await channel.getMembers()
-    // updateMemberTotal(members)
 }
 
 let handleChannelMessage_Global = async (messageData, MemberId) => {
-    console.log('A new message was received')
+
     let data = JSON.parse(messageData.text)
 
-    if(data.type === 'chat'){
-        addMessageToDom(data.displayName, data.message)
+    if(data.type === 'invite'){
+        if(data.invited == displayName){
+
+            notify = `<div class="Notify-item">
+                        <img src="${data.roomImg}">
+                        <p class="Notify_message">${data.inviter} invite you to room <b style="font-size: 16px">${data.roomName}</b></p>
+                        <a href="/room/${data.roomID}">
+                            <div class="btn-join">Join</div>            
+                        </a>
+                    </div>`
+
+            document.getElementById('list_notify_invite').insertAdjacentHTML('afterbegin',notify)   
+            document.getElementById('notify_invite_count').style.opacity = 1
+            // console.log(data.inviter +' invite me to '+data.roomName+' with code: '+data.roomID)
+        }
     }
+}
 
-    if(data.type === 'user_left'){
-        document.getElementById(`user-container-${data.uid}`).remove()
+let getMembers_Global = async () => {
+    let members = await Global_channel.getMembers()
 
-        // if(userIdInDisplayFrame === `user-container-${uid}`){
-        //     displayFrame.style.display = null
+    for (let i = 0; members.length > i; i++){
+        handleMemberJoined_Global(members[i])
+    }
+}
+
+let sendInvite = async (e) => {
     
-        //     for(let i = 0; videoFrames.length > i; i++){
-        //         videoFrames[i].style.height = '100%'
-        //         videoFrames[i].style.width = '20%'
-        //     }
-        // }
-    }
+    e.currentTarget.parentElement.classList.toggle('active')
+    info = e.currentTarget.getElementsByTagName('p')
+    
+    image = e.currentTarget.getElementsByTagName('img')[0].src.replace(window.location.origin, "")
+    
+    roomName = info[0].innerText
+    roomID = info[1].innerText
+    user = info[2].innerText
+    
+    Global_channel.sendMessage({text:JSON.stringify({'type':'invite', 'invited':user, 'roomID': roomID, 'roomName': roomName ,'roomImg': image,'inviter':displayName})})
 }
 
 let leaveCommunity = async () => {
     await Global_channel.leave()
-    await Global_rtmClient.logout()
+    // await Global_rtmClient.logout()
 }
 
 window.addEventListener('beforeunload', leaveChannel)

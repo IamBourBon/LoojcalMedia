@@ -504,7 +504,7 @@ class UserController extends Controller
         Users::where('Email',Session::get('email'))->update(['Friends' => json_encode($list)]);
         
         //TYPE JSON
-        return $this->getFollow();
+        return $email;
     }
 
     public function unFollowUser(Request $request){
@@ -519,6 +519,6 @@ class UserController extends Controller
         Users::where('Email',Session::get('email'))->update(['Friends' => json_encode($newlist)]);
         
         //TYPE JSON
-        return ;
+        return $email;
     }
 }

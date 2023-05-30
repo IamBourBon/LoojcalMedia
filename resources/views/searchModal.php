@@ -210,6 +210,25 @@
             </div>
         </div> -->
 
+        <button class="notify-invite" id="notify_invite">
+            <svg fill="#ffffff" height="30" width="30" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 611.999 611.999" xml:space="preserve" stroke="#ffffff">
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                <g id="SVGRepo_iconCarrier">
+                    <g>
+                        <g>
+                            <g>
+                                <path d="M570.107,500.254c-65.037-29.371-67.511-155.441-67.559-158.622v-84.578c0-81.402-49.742-151.399-120.427-181.203 C381.969,34,347.883,0,306.001,0c-41.883,0-75.968,34.002-76.121,75.849c-70.682,29.804-120.425,99.801-120.425,181.203v84.578 c-0.046,3.181-2.522,129.251-67.561,158.622c-7.409,3.347-11.481,11.412-9.768,19.36c1.711,7.949,8.74,13.626,16.871,13.626 h164.88c3.38,18.594,12.172,35.892,25.619,49.903c17.86,18.608,41.479,28.856,66.502,28.856 c25.025,0,48.644-10.248,66.502-28.856c13.449-14.012,22.241-31.311,25.619-49.903h164.88c8.131,0,15.159-5.676,16.872-13.626 C581.586,511.664,577.516,503.6,570.107,500.254z M484.434,439.859c6.837,20.728,16.518,41.544,30.246,58.866H97.32 c13.726-17.32,23.407-38.135,30.244-58.866H484.434z M306.001,34.515c18.945,0,34.963,12.73,39.975,30.082 c-12.912-2.678-26.282-4.09-39.975-4.09s-27.063,1.411-39.975,4.09C271.039,47.246,287.057,34.515,306.001,34.515z M143.97,341.736v-84.685c0-89.343,72.686-162.029,162.031-162.029s162.031,72.686,162.031,162.029v84.826 c0.023,2.596,0.427,29.879,7.303,63.465H136.663C143.543,371.724,143.949,344.393,143.97,341.736z M306.001,577.485 c-26.341,0-49.33-18.992-56.709-44.246h113.416C355.329,558.493,332.344,577.485,306.001,577.485z" />
+                                <path d="M306.001,119.235c-74.25,0-134.657,60.405-134.657,134.654c0,9.531,7.727,17.258,17.258,17.258 c9.531,0,17.258-7.727,17.258-17.258c0-55.217,44.923-100.139,100.142-100.139c9.531,0,17.258-7.727,17.258-17.258 C323.259,126.96,315.532,119.235,306.001,119.235z" />
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+            <div class="count-notify" id="notify_invite_count"></div>
+            <div class="list-notify" id="list_notify_invite"></div>
+        </button>
+        
         <div class="right-side">
             <button class="btn-close-right">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-x-circle" viewBox="0 0 24 24">
@@ -480,6 +499,7 @@
     </div>
     <!-- search user profile -->
 
+
     <!-- modal create server -->
     <div class="popup" id="popup">
         <div class="slider">
@@ -558,9 +578,10 @@
 
         function defaultRoom() {
             if (window.location.pathname === '/') {
+                
+                $('#join-btn').removeClass('active')
 
-                $('#join-btn').attr('style', 'display:none')
-
+                $('#notify_invite').addClass('active')
                 $('#suggestSearch').addClass('active')
                 $('#userInfo').addClass('active')
                 $("#listFriend").addClass('listFriend')
@@ -600,10 +621,12 @@
                                             <div class="userOnline"></div>
                                             <p class="friend_name">${value}</p>
 
-                                            <div class="btn-invite">Invite</div>
+                                            <div class="btn-invite" id="invite-${value}">Invite</div>
+                                            <div class="invite-list-server" id="invite-list-server-${value}"></div>
                                         </div>`
 
                                         document.getElementById('listFriend').getElementsByClassName('Friend__wrapper')[0].insertAdjacentHTML('afterbegin', itemUser)
+                                        document.getElementById(`invite-${value}`).addEventListener('click', showListServer)
                                     }
                                 });
 
@@ -614,13 +637,48 @@
 
             } else {
 
+                $('#join-btn').addClass('active')
+
                 $('#suggestSearch').attr('style', 'visibility:hidden')
                 $('#userInfo').attr('style', 'visibility:hidden')
                 $('#listFriend').attr('style', 'visibility:hidden')
 
+                $('#notify_invite').removeClass('active')
                 $('#suggestSearch').removeClass('active')
                 $('#userInfo').removeClass('active')
                 $('#listFriend').removeClass('listFriend')
+            }
+        }
+
+        function showListServer(e) {
+            e.currentTarget.parentElement.getElementsByClassName('invite-list-server')[0].classList.toggle('active')
+            userEmail = e.currentTarget.id.replace('invite-', '')
+
+            listServers = Array.from(document.getElementsByClassName('nav-list')[0].getElementsByTagName('li'))
+            listServers.pop()
+            listServers.pop()
+            listInviteServers = Array.from(e.currentTarget.parentElement.getElementsByClassName('invite-list-server')[0].getElementsByClassName('Server-item'))
+
+            if (listInviteServers.length == 0) {
+
+                for (i = 0; i < listServers.length; i++) {
+                    serverId = listServers[i].getElementsByTagName('a')[0].id
+                    serverName = listServers[i].getElementsByTagName('span')[0].innerText
+                    serverImage = listServers[i].getElementsByTagName('img')[0].src.replace(window.location.origin, "")
+
+                    if (serverId && serverName && serverImage) {
+
+                        itemServer = `<div class="Server-item" id="server-invite-${serverId}">
+                                    <img src="${serverImage}">
+                                    <p class="server_name">${serverName}</p>
+                                    <p style="display:none">${serverId}</p>
+                                    <p style="display:none">${userEmail}</p>
+                                </div>`
+
+                        document.getElementById(`invite-list-server-${userEmail}`).insertAdjacentHTML('afterbegin', itemServer)
+                        document.getElementById(`server-invite-${serverId}`).addEventListener('click', sendInvite)
+                    }
+                }
             }
         }
 
@@ -715,17 +773,17 @@
 
 
                 //Hover change COLOR
-                $(".searchItem a div").hover(function() {
+                // $(".searchItem a div").hover(function() {
 
-                    id = $(this).attr('name');
-                    $("#sg" + id).css('background-color', '#088dcd');
-                    $("#sg" + id).css('color', 'white');
-                }, function() {
+                //     id = $(this).attr('name');
+                //     $("#sg" + id).css('background-color', '#088dcd');
+                //     $("#sg" + id).css('color', 'white');
+                // }, function() {
 
-                    id = $(this).attr('name');
-                    $("#sg" + id).css('background', 'none');
-                    $("#sg" + id).css('color', 'white');
-                });
+                //     id = $(this).attr('name');
+                //     $("#sg" + id).css('background', 'none');
+                //     $("#sg" + id).css('color', 'white');
+                // });
 
                 if ($(this).val() === '' && !$.isEmptyObject(arrHistory)) {
                     //DISPLAY history
@@ -1240,6 +1298,35 @@
                     },
                     data: {
                         email: email
+                    },
+                    success: function(response) {
+                        $.ajax({
+                            async: false,
+                            type: 'GET',
+                            url: `getProfile/${response}`,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(res) {
+
+                                if (res.Avatar === '' || res.Avatar === null) {
+                                    avatar = 'avatar/avatar_default.jpg'
+                                } else {
+                                    avatar = res.Avatar
+                                }
+
+                                itemUser = `<div class="Friend-item">
+                                            <img src="/uploads/${avatar}">
+                                            <div class="userOnline"></div>
+                                            <p class="friend_name">${response}</p>
+
+                                            <div class="btn-invite" id="invite-${response}">Invite</div>
+                                        </div>`
+
+                                document.getElementById('listFriend').getElementsByClassName('Friend__wrapper')[0].insertAdjacentHTML('afterbegin', itemUser)
+                                document.getElementById(`invite-${response}`).addEventListener('click', sendInvite)
+                            }
+                        });
                     }
                 })
 
@@ -1259,11 +1346,31 @@
                     },
                     data: {
                         email: email
+                    },
+                    success: function(res) {
+                        friendList = document.getElementById('listFriend').getElementsByClassName('Friend-item')
+
+                        for (i = 0; i < friendList.length; i++) {
+                            if (friendList[i].getElementsByClassName('friend_name')[0].innerText == res) {
+                                friendList[i].remove()
+                            }
+                        }
                     }
                 })
 
                 window.location.hash = '';
                 window.history.pushState(null, '', window.location.origin + window.location.pathname)
+            })
+
+            //NOTIFY INVITE
+            $('#notify_invite').click(function(){
+                $('#list_notify_invite').toggleClass('active')
+                $('#notify_invite_count').css('opacity','0')
+            })
+
+            $('#list_notify_invite').click(function(e){
+                e.stopPropagation()
+                console.log(e.currentTarget)
             })
         })
     </script>
