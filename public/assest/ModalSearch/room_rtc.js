@@ -102,11 +102,16 @@ let joinRoomInit = async () => {
 
 let joinStream = async () => {
 
+    let loader = document.querySelector('.loader')
+    loader.classList.remove('loader-hidden')
+
     joinRoomInit()
 
     document.getElementById('join-btn').style.display = 'none'
     document.getElementById('vc-lobby').style.display = 'none'
+    document.getElementById('roomName').style.display = 'none'
     document.getElementById('chatbox').style.display = 'block'
+
     document.getElementsByClassName('app-container')[0].style.display = 'flex'
     document.getElementsByClassName('video-call-actions')[0].style.display = 'flex'
     document.getElementsByClassName('sidebar')[0].style.display = 'none'
@@ -145,6 +150,10 @@ let joinStream = async () => {
     xhttp.open("GET", `/getProfile/${displayName}`, true)
     xhttp.send()
 
+    setTimeout( () => { 
+        loader.classList.add('loader-hidden')
+    }, 7000);
+  
 }
 
 let switchToCamera = async () => {
@@ -461,6 +470,7 @@ let leaveStream = async (e) => {
 
     document.getElementById('join-btn').style.display = 'block'
     document.getElementById('vc-lobby').style.display = 'block'
+    document.getElementById('roomName').style.display = 'block'
     document.getElementsByClassName('app-container')[0].style.display = 'none'
     document.getElementsByClassName('video-call-actions')[0].style.display = 'none'
     document.getElementsByClassName('sidebar')[0].style.display = 'block'

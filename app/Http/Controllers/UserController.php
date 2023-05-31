@@ -200,9 +200,11 @@ class UserController extends Controller
             Session::put(['email' => $user['email']]);
             
             $accountInfo = $this->getUserInfoByEmail($user['email']);
-            Session::put(['avatar' => $accountInfo['Avatar']]);
-            Session::put(['fullname' => $accountInfo['Lastname'].$accountInfo['Firstname']]);
-
+            if($accountInfo){
+                Session::put(['avatar' => $accountInfo['Avatar']]);
+                Session::put(['fullname' => $accountInfo['Lastname'].$accountInfo['Firstname']]);    
+            }
+            
             return redirect('/');
         }
     } 

@@ -75,7 +75,7 @@
 
 
                                                     <div style="display: inline-block; margin-top: 20px; width: 100%">
-                                                        <a href="http://127.0.0.1:8000/active/<?php echo $data['Email']?>/<?php echo $token?>" style="background: #4f93ce; position: relative; font-size: 16px; color: #fff; margin-top: 10px; padding: 7px 30px; cursor: pointer; overflow: hidden; text-decoration: none" type="submit"><span>Verify E-mail Address</span></a>
+                                                        <a href="http://localhost:8000/active/<?php echo $data['Email']?>/<?php echo $token?>" style="background: #4f93ce; position: relative; font-size: 16px; color: #fff; margin-top: 10px; padding: 7px 30px; cursor: pointer; overflow: hidden; text-decoration: none" type="submit"><span>Verify E-mail Address</span></a>
                                                     </div>
                                                 </td>
 

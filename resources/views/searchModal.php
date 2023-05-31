@@ -19,13 +19,17 @@
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
-
-    <!-- <link rel='stylesheet' type='text/css' media='screen' href='./videocalltest/main.css'> -->
-    <!-- <link rel='stylesheet' type='text/css' media='screen' href='./videocalltest/room.css'> -->
 </head>
 
 <body class="dark" onload="defaultRoom()">
     <input type="hidden" id="session_email" value="<?php echo Session::get('email') ?>">
+
+    <div class="loader">
+        <div id="shadow"></div>
+        <div id="box"></div>
+        <div id="load_text">Loading ...</div>
+    </div>
+    
 
     <!-- side bar -->
     <div class="sidebar">
@@ -48,15 +52,9 @@
                 <button class="btn-setting red"><i class="fa fa-plus red"></i></button>
                 <span class="tooltip">Create new server</span>
             </li>
-
-            <li>
-                <button class="btn-setting red" id="videoCall"><i class="fa fa-video-camera"></i></button>
-                <span class="tooltip">Video call</span>
-            </li>
         </ul>
     </div>
     <!-- side bar -->
-
 
     <div class="box">
 
@@ -356,6 +354,8 @@
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
             </svg>
         </button>
+        
+        <div class="roomName" id="roomName"></div>
 
         <button class="video-action-button joincall" id="join-btn">
             <div style="display:inline-block;vertical-align: middle;">
@@ -506,31 +506,31 @@
             <div class="modal-server">
 
                 <div class="popup__content">
-                    <div class="popup__title">Tạo máy chủ</div>
+                    <div class="popup__title">Tạo phòng thoại</div>
                     <a href="javascript:void(0)" onclick="removeHashURL()" class="button">x</a>
-                    <button id="btn-create"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt="">
-                        <p>Tạo máy chủ mới</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
+                    <button id="btn-create"><img src="/images/createServer.jpg" alt="">
+                        <p>Tạo phòng thoại mới</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
                     </button>
-                    <button id="btn-join">Tham gia máy chủ</button>
+                    <button id="btn-join">Tham gia phòng thoại</button>
                 </div>
 
                 <div class="popup__content__create">
-                    <h2 class="popup__title">Thông tin về máy chủ</h2>
+                    <h2 class="popup__title">Thông tin về phòng thoại</h2>
                     <a href="javascript:void(0)" onclick="removeHashURL()" class="button">x</a>
-                    <button class="btn-create-server" value="0"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt="">
-                        <p>Máy chủ cộng đồng</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
+                    <button class="btn-create-server" value="0"><img src="/images/createServer.jpg" alt="">
+                        <p>Phòng thoại cộng đồng</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
                     </button>
-                    <button class="btn-create-server" value="1"><img src="https://i.pinimg.com/originals/8d/9b/50/8d9b500afcae16edc9257b34ae853b77.jpg" alt="">
-                        <p>Máy chủ riêng tư</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
+                    <button class="btn-create-server" value="1"><img src="/images/createServer.jpg" alt="">
+                        <p>Phòng thoại riêng tư</p><i class="fa fa-angle-right" style="font-size: 34px;margin:3px 0px 0px 100px;color:gray;float:right;"></i>
                     </button>
                     <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
                 </div>
 
                 <div class="popup__content__create__setting">
 
-                    <h2 class="popup__title">Tùy chỉnh về máy chủ của bạn</h2>
+                    <h2 class="popup__title">Tùy chỉnh về phòng thoại của bạn</h2>
                     <a href="javascript:void(0)" onclick="removeHashURL()" class="button">x</a>
-                    <p style="text-align: center; margin: 10px 0px;">Hãy cá nhân hóa máy chủ bằng cách đặt tên và thêm biểu tượng đại diện. Bạn có thể đổi bất cứ lúc nào</p>
+                    <p style="text-align: center; margin: 10px 0px;">Hãy cá nhân hóa phòng thoại bằng cách đặt tên và thêm biểu tượng đại diện. Bạn có thể đổi bất cứ lúc nào</p>
 
                     <div class="popup__upload">
                         <i class="fa fa-camera icon-upload">
@@ -541,7 +541,7 @@
                         <input type="file" accept="image/*" id="imgInp">
                     </div>
 
-                    <p style="display: inline-block" class="popup__title__data">Tên máy chủ
+                    <p style="display: inline-block" class="popup__title__data">Tên phòng thoại
                     <p style="display:inline-block;color:red;margin-left:5px;">*</p>
                     </p>
                     <input type="text" class="input-join" id="serverID" require>
@@ -552,16 +552,16 @@
 
 
                 <div class="popup__content__join">
-                    <div class="popup__title">Tham gia máy chủ</div>
+                    <div class="popup__title">Tham gia phòng thoại</div>
                     <a href="javascript:void(0)" onclick="removeHashURL()" class="button">x</a>
-                    <p style="display: inline-block" class="popup__title__data">Liên kết máy chủ
+                    <p style="display: inline-block" class="popup__title__data">Liên kết phòng thoại
                     <p style="display:inline-block;color:red;margin-left:5px;">*</p>
                     </p>
                     <input type="text" class="input-join" id="join-name" require>
                     <p class="popup__title__data">Lời mời trông giống như</p>
                     <p style="margin-top:10px; font-size: 14px;">hZ431241<br>http://localhost/hZ431241<br>http://localhost/cool-server<br></p>
                     <button class="btn-pre"><i class="fa fa-sign-out icon-pre"></i>Trở về</button>
-                    <button id="join-server" class="btn-join-server">Tham gia máy chủ</button>
+                    <button id="join-server" class="btn-join-server">Tham gia phòng</button>
                 </div>
 
             </div>
@@ -571,6 +571,34 @@
 
 
     <script>
+
+        function prebeforeunload(){
+            window.addEventListener('beforeunload', () => {
+                let loader = document.querySelector('.loader')
+
+                loader.classList.add('loader-hidden')
+
+                loader.addEventListener('transitionend', () => {
+                    document.body.removeChild('loader')
+                })
+            })
+        }
+
+        function preload(){
+            window.addEventListener('load', () => {
+                let loader = document.querySelector('.loader')
+
+                loader.classList.add('loader-hidden')
+
+                loader.addEventListener('transitionend', () => {
+                    document.body.removeChild('loader')
+                })
+            })
+        }
+
+        prebeforeunload()
+        preload()
+        
         function removeHashURL() {
             window.location.hash = '';
             window.history.pushState(null, '', window.location.origin + window.location.pathname)
@@ -580,12 +608,13 @@
             if (window.location.pathname === '/') {
                 
                 $('#join-btn').removeClass('active')
+                $('#roomName').removeClass('active')
 
                 $('#notify_invite').addClass('active')
                 $('#suggestSearch').addClass('active')
                 $('#userInfo').addClass('active')
                 $("#listFriend").addClass('listFriend')
-
+                
                 $.ajax({
                     async: false,
                     type: 'GET',
@@ -637,8 +666,21 @@
 
             } else {
 
-                $('#join-btn').addClass('active')
+                listServer = document.getElementsByClassName('nav-list')[0].getElementsByClassName('server')
+                setTimeout(function(){
+                    for(i = 0 ; i < listServer.length; i++){
+                    console.log(listServer[i].getElementsByTagName('a')[0].id)
 
+                        if(listServer[i].getElementsByTagName('a')[0].id == window.location.pathname.replace('/room/','')){
+                            document.getElementById('roomName').innerText = listServer[i].getElementsByTagName('span')[0].innerText
+                        }   
+                    }
+                },1000)
+                
+
+                $('#join-btn').addClass('active')                
+                $('#roomName').addClass('active')
+                
                 $('#suggestSearch').attr('style', 'visibility:hidden')
                 $('#userInfo').attr('style', 'visibility:hidden')
                 $('#listFriend').attr('style', 'visibility:hidden')
@@ -655,7 +697,6 @@
             userEmail = e.currentTarget.id.replace('invite-', '')
 
             listServers = Array.from(document.getElementsByClassName('nav-list')[0].getElementsByTagName('li'))
-            listServers.pop()
             listServers.pop()
             listInviteServers = Array.from(e.currentTarget.parentElement.getElementsByClassName('invite-list-server')[0].getElementsByClassName('Server-item'))
 
@@ -730,10 +771,11 @@
                     if (response !== '') {
 
                         data = JSON.parse(response);
+                        
                         $.each(data, function(key, value) {
 
                             if ($.inArray(value.Account_id, arrSuggest) === -1 && key < 5) {
-
+                                
                                 let avatar = ''
                                 if (value.Avatar === '' || value.Avatar === null) {
                                     avatar = avatar_img_default
@@ -743,6 +785,9 @@
                                 html = `<a href="#profile" id="${value.Email}"><div id=sg` + value.Account_id + ' name=' + value.Account_id + ` class="suggest"><img src="/uploads/${avatar}"><p id="suggestName` + value.Account_id + '" class="suggest-name">' + value.Lastname + " " + value.Firstname + '</p></div></a>';
                                 arrSuggest.push(value.Account_id);
                                 $('.searchItem').append(html);
+                                document.getElementById(`${value.Email}`).addEventListener('mouseover',hoverSuggest)
+                                document.getElementById(`${value.Email}`).addEventListener('mouseleave',leaveSuggest)
+                                document.getElementById(`${value.Email}`).addEventListener('click',clickSuggest)
                             }
                         });
                     }
@@ -772,18 +817,80 @@
                 });
 
 
-                //Hover change COLOR
-                // $(".searchItem a div").hover(function() {
+                function hoverSuggest(e){
+                    
+                    id = e.currentTarget.getElementsByTagName('div')[0].getAttribute('name');
+                    $("#sg" + id).css('background-color', '#088dcd');
+                    $("#sg" + id).css('color', 'white');
+                }
 
-                //     id = $(this).attr('name');
-                //     $("#sg" + id).css('background-color', '#088dcd');
-                //     $("#sg" + id).css('color', 'white');
-                // }, function() {
+                function leaveSuggest(e){
+                    
+                    id = e.currentTarget.getElementsByTagName('div')[0].getAttribute('name');
+                    $("#sg" + id).css('background', 'none');
+                    $("#sg" + id).css('color', 'white');
+                }
 
-                //     id = $(this).attr('name');
-                //     $("#sg" + id).css('background', 'none');
-                //     $("#sg" + id).css('color', 'white');
-                // });
+                function clickSuggest(event){
+                    console.log('click1', event.currentTarget)
+                    event.stopImmediatePropagation();
+                    
+                    let id = event.currentTarget.getElementsByTagName('div')[0].getAttribute('name')
+
+                    let email = event.currentTarget.id
+                    let fullname = event.currentTarget.getElementsByClassName('suggest-name')[0].innerHTML
+                    let image = event.currentTarget.getElementsByTagName('img')[0].src.replace(window.location.origin, "")
+
+                    document.getElementById('previewProfile').getElementsByClassName('Profile-title')[0].innerText = email
+                    document.getElementById('previewProfile').getElementsByClassName('Profile-name')[0].innerText = fullname
+                    document.getElementById('AvatarUser2').src = image
+
+                    $.ajax({
+                        async: true,
+                        type: 'GET',
+                        url: '/getFollow',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(res) {
+                            arr = JSON.parse(res)
+                            if (arr.includes(email)) {
+                                document.getElementById('follow').style.display = 'none'
+                                document.getElementById('unfollow').style.display = 'block'
+                            } else {
+                                //SEARCH YOURSELF
+                                if(email === $('#session_email').val()){
+                                    document.getElementById('follow').style.display = 'none'
+                                    document.getElementById('unfollow').style.display = 'none'
+                                
+                                }else{
+                                    document.getElementById('follow').style.display = 'block'
+                                    document.getElementById('unfollow').style.display = 'none'
+                                }
+                            }
+                        }
+                    });
+
+                    if ($(this).attr('name') !== null) {
+                        $.ajax({
+                            async: false,
+                            type: 'POST',
+                            url: '/search/history/store',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                value: id
+                            },
+                            success: function(res) {
+                                arrHistory.push(res);
+                                if ($('#sg' + res).find('div').length === 0) {
+                                    $('#sg' + res).append('<div id="removeHis' + res + '"  name=' + res + ' style="display: inline-block; float: right; width: 27px; text-align: center; font-size: large; margin-top: 16px;">x</div>');
+                                }
+                            }
+                        });
+                    }
+                }
 
                 if ($(this).val() === '' && !$.isEmptyObject(arrHistory)) {
                     //DISPLAY history
@@ -939,8 +1046,15 @@
                                 document.getElementById('follow').style.display = 'none'
                                 document.getElementById('unfollow').style.display = 'block'
                             } else {
-                                document.getElementById('unfollow').style.display = 'none'
-                                document.getElementById('follow').style.display = 'block'
+                                //SEARCH YOURSELF
+                                if(email === $('#session_email').val()){
+                                    document.getElementById('follow').style.display = 'none'
+                                    document.getElementById('unfollow').style.display = 'none'
+                                
+                                }else{
+                                    document.getElementById('follow').style.display = 'block'
+                                    document.getElementById('unfollow').style.display = 'none'
+                                }
                             }
                         }
                     });
@@ -1004,21 +1118,21 @@
             }
 
             //LIST user
-            $(".list-item").sortable({
-                connectWith: '.list-item',
-                scroll: false,
-                zIndex: 9999,
-                remove: function(event, ui) {
+            // $(".list-item").sortable({
+            //     connectWith: '.list-item',
+            //     scroll: false,
+            //     zIndex: 9999,
+            //     remove: function(event, ui) {
 
-                    if ($(event.target.parentElement).find('ul').html().trim() === '') {
-                        // $( "details ul" ).sortable( "cancel" );
-                        $(event.target.parentElement).find('ul').append('<div class="empty" style="height:10px; margin: 20px; background: red;"></div>');
-                    }
-                },
-                update: function(event, ui) {
+            //         if ($(event.target.parentElement).find('ul').html().trim() === '') {
+            //             // $( "details ul" ).sortable( "cancel" );
+            //             $(event.target.parentElement).find('ul').append('<div class="empty" style="height:10px; margin: 20px; background: red;"></div>');
+            //         }
+            //     },
+            //     update: function(event, ui) {
 
-                }
-            });
+            //     }
+            // });
 
             // //DRAG search modal
             // $('.modal').draggable();
@@ -1153,7 +1267,7 @@
                                     img_src = room_img_default
                                 }
 
-                                html = `<li>
+                                html = `<li class="server">
                                     <a  href="/room/${value.URL}" id="${value.URL}">    
                                         <img src="/uploads/${img_src}">
                                     </a>
@@ -1210,15 +1324,15 @@
 
             //USER INFO
             $('#icon-user').click(function() {
-                $('#join-btn').attr('style', 'display:none')
+                // $('#join-btn').attr('style', 'display:none')
 
-                $('#suggestSearch').attr('style', 'visibility:visible')
-                $('#userInfo').attr('style', 'visibility:visible')
-                $('#listFriend').attr('style', 'visibility:visible')
+                // $('#suggestSearch').attr('style', 'visibility:visible')
+                // $('#userInfo').attr('style', 'visibility:visible')
+                // $('#listFriend').attr('style', 'visibility:visible')
 
-                $('#suggestSearch').addClass('active')
-                $('#userInfo').addClass('active')
-                $('#listFriend').addClass('listFriend')
+                // $('#suggestSearch').addClass('active')
+                // $('#userInfo').addClass('active')
+                // $('#listFriend').addClass('listFriend')
 
                 window.location.pathname = '/';
                 window.history.replaceState(null, '', window.location.origin + window.location.pathname)

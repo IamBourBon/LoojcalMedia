@@ -1654,6 +1654,7 @@ body.dark .btn-close-right {
 }
 
 .right-side {
+  display: none;
   margin-left: auto;
   top: 0;
   flex-basis: 400px;
@@ -1966,6 +1967,10 @@ body.dark .btn-close-right {
 }
 
 .video-call-lobby {
+  /* background: url('https://wallpaperaccess.com/full/2907976.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
   width: 100%;
   height: 100vh;
   position: relative;
@@ -2269,6 +2274,24 @@ body.dark .btn-close-right {
   background-position: center;
 }
 
+.roomName{
+  width: 530px;
+  height: 70px;
+  position: absolute;
+  z-index: 99;
+  left: 35%;
+  top: 45%;
+  padding: 10px;
+  display: none;
+  text-align: center;
+  font-size: 35px;
+  box-shadow: 0px 1rem 1.5rem rgb(0 0 0 / 50%);
+}
+
+.roomName.active{
+  display: block;
+}
+
 .video-action-button.joincall {
   color: white;
   background-color: #845695;
@@ -2278,13 +2301,16 @@ body.dark .btn-close-right {
   padding-right: 15px;
   position: absolute;
   top: 150%;
-  left: 50%;
+  left: 49%;
   z-index: 99;
+  display: none;
+  box-shadow: 0px 1rem 1.5rem rgb(0 0 0 / 50%);
 }
 
 .video-action-button.joincall.active {
   top: 60%;
   transition: 1s;
+  display: block;
 }
 
 .video-action-button.magnifier {
@@ -3085,4 +3111,73 @@ body::-webkit-scrollbar-thumb {
   text-align: center;
   padding: 11px 0px;
   cursor: pointer;
+}
+
+/* PRELOADER */
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #262a42;
+  transition: opacity 0.75s, visibility 0.75s; 
+  z-index: 105;
+}
+
+.loader-hidden{
+  opacity: 0;
+  visibility: hidden;
+}
+
+#box {
+  width: 50px;
+  height: 50px;
+  background: #fff;
+  animation: animate .5s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 3px;
+}
+
+@keyframes animate {
+  17% { border-bottom-right-radius: 3px; }
+  25% { transform: translateY(9px) rotate(22.5deg); }
+  50% {
+    transform: translateY(18px) scale(1,.9) rotate(45deg) ;
+    border-bottom-right-radius: 40px;
+  }
+  75% { transform: translateY(9px) rotate(67.5deg); }
+  100% { transform: translateY(0) rotate(90deg); }
+} 
+
+#shadow { 
+  width: 50px;
+  height: 5px;
+  background: #000;
+  opacity: 0.7;
+  position: absolute;
+  top: 58.5%;
+  left: 50%;
+  border-radius: 50%;
+  animation: shadow .5s linear infinite;
+}
+@keyframes shadow {
+  50% {
+    transform: scale(1.2,1);
+  }
+}
+
+#load_text{
+  position: absolute;
+  top: 59%;
+  left: 45%;
+  font-family: cursive;
+  font-size: 25px;
+  letter-spacing: 10px;  
 }
