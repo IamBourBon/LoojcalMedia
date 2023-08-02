@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\RTCController;
+// use App\Http\Controllers\RTCController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -66,34 +66,5 @@ Route::get('/activeAccount/{email}', [UserController::class, 'activeAccount']);
 Route::get('/active/{email}/{token}', [UserController::class, 'active']);
 Route::post('/ajaxCheckData', [UserController::class, 'checkDataRegister']);
 
-
-//DESIGN ROUTE
-// route::get('/design/listItem',function(){
-//     return view('/design/templateListItem');
-// });
-// route::get('/design/sideBar',function(){
-//     return view('/design/templateSideBar');
-// });
-// route::get('/design/chatBox',function(){
-//     return view('/design/templateChatBox');
-// });
-// route::get('/design/listUser',function(){
-//     return view('/design/templateListUser');
-// });
-// route::get('/design/createServer',function(){
-//     return view('/design/templateCreateServer');
-// });
-// route::get('/design/videoCall',function(){
-//     return view('/design/templateVideoCall');
-// });
-// route::get('/test/videoCall',function(){
-//     return view('/design/VideoCallLocal');
-// });
-// route::get('/test/videoCall2',function(){
-//     return view('/design/lobby');
-// });
-// route::get('/test/videoCall3',function(){
-//     return view('/room');
-// });
 
 

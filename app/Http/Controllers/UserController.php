@@ -38,8 +38,9 @@ class UserController extends Controller
             Session::put(['email' => $request->input('email')]);
             return redirect('/');
         }
-
-        echo "error"; 
+        
+        //Login failed
+        return redirect('/login'); 
     }
 
 
